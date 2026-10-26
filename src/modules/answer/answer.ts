@@ -6,7 +6,6 @@ import type { WebEvidence } from "../web-search/provider.js";
 import type { Selection } from "../ranking/select.js";
 import { excerpt } from "../../shared/text.js";
 
-/** Minimal, already-authorized evidence view that is allowed to reach the answer generator. */
 export interface EvidenceItem {
   id: string;
   channel: "inner_circle" | "wider_social";
