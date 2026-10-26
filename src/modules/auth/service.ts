@@ -11,7 +11,6 @@ const displayName = z
   .trim()
   .min(2, "Display name must be at least 2 characters")
   .max(60, "Display name must be at most 60 characters")
-  // eslint-disable-next-line no-control-regex
   .refine((s) => !/[\u0000-\u001f\u007f<>]/.test(s), "Display name contains invalid characters");
 
 const email = z.string().trim().max(254).email("Enter a valid email address").transform(normalizeEmail);
@@ -44,10 +43,9 @@ export async function registerUser(ctx: AppContext, input: z.infer<typeof Regist
 }
 
 let dummyHash: Promise<string> | null = null;
-/** Verify against a throw-away hash when the account does not exist, so response time does not reveal which emails are registered. */
+
 const dummy = (log2N: number) => (dummyHash ??= hashPassword("not-a-real-password-for-timing", log2N));
 
-/** Returns the user if the credentials are valid; null otherwise (never says *why*). Transparently upgrades weak hashes. */
 export async function checkCredentials(ctx: AppContext, rawEmail: string, pw: string): Promise<{ id: string; displayName: string; email: string | null } | null> {
   const u = await ctx.db.user.findUnique({ where: { email: normalizeEmail(rawEmail) }, select: { id: true, displayName: true, email: true, passwordHash: true, isActive: true } });
   if (!u || !u.passwordHash || !u.isActive) {
