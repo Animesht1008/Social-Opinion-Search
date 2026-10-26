@@ -1,11 +1,3 @@
-/**
- * Minimal operator tool (there is no email-based password reset, so this is the recovery path):
- *   npm run user:admin -- create <email> "<Display Name>"     (prompts for nothing; password via env USER_PASSWORD)
- *   npm run user:admin -- set-password <email>                (new password via env USER_PASSWORD; revokes all sessions)
- *   npm run user:admin -- disable <email> | enable <email>    (disable also revokes sessions)
- *   npm run user:admin -- list
- * The password is read from the USER_PASSWORD environment variable so it never appears in shell history arguments.
- */
 import { randomBytes } from "node:crypto";
 import { loadConfig } from "../src/config/env.js";
 import { createPrisma } from "../src/db/client.js";
