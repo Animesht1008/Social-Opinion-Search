@@ -104,16 +104,6 @@ Hybrid − lexical ΔNDCG@5 = +0.112 (95% bootstrap CI +0.031…+0.208); social-
 │       └── 01-init.sql
 ├── docker-compose.yml
 ├── docs/
-│   ├── ARCHITECTURE.md
-│   ├── AUTH.md
-│   ├── DATASETS.md
-│   ├── DECISIONS.md
-│   ├── DEPLOYMENT.md
-│   ├── EVALUATION.md
-│   ├── INTERVIEW_QA.md
-│   ├── LIMITATIONS.md
-│   ├── PROJECT_DEEP_DIVE.md
-│   ├── RANKING.md
 │   └── results/
 │       ├── bootstrap.json
 │       ├── latest-summary.json
