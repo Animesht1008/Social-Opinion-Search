@@ -1,10 +1,5 @@
 import { createHash } from "node:crypto";
 
-/**
- * Text cleaning for imported public datasets. Everything here is deterministic and conservative:
- * the goal is to remove markup and obvious personal identifiers, NOT to rewrite opinions.
- * Cleaning is lossy by design (HTML removed, PII patterns masked) and is recorded in each row's provenance note.
- */
 const ENTITIES: Record<string, string> = { "&amp;": "&", "&quot;": '"', "&#39;": "'", "&#x27;": "'", "&apos;": "'", "&lt;": "<", "&gt;": ">", "&nbsp;": " " };
 
 export function normalizeText(raw: string): string {
@@ -35,7 +30,6 @@ export function scrubPii(text: string): Scrubbed {
 
 const EN_STOP = new Set("the and was is of to in we it for with a i were had but not very this that they our are have on at as be from my so you there".split(" "));
 
-/** Cheap English detector: mostly-ASCII letters and a healthy share of common English function words. Not a language-ID model. */
 export function looksEnglish(text: string): boolean {
   const nonSpace = text.replace(/\s/g, "");
   if (nonSpace.length === 0) return false;
@@ -64,7 +58,6 @@ export function canonicalCity(raw: string): string {
 
 const MONTHS = ["january", "february", "march", "april", "may", "june", "july", "august", "september", "october", "november", "december"];
 
-/** Accepts ISO (2019-05-20, 2019-05-20T10:00:00Z), "20 May 2019", "May 20, 2019", "May 2019", "20/05/2019" (day-first), unix seconds. Returns null if unparseable. */
 export function parseDate(raw: string): Date | null {
   const s = raw.trim();
   if (!s) return null;
