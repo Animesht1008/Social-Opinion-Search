@@ -10,12 +10,10 @@ export const dbAvailable = () => inject("dbAvailable");
 
 export const DEMO_PASSWORD = "test-demo-password-1";
 
-/** Fast scrypt, no rate limiting by default (tests that exercise limits turn it on explicitly). */
 export function testConfig(extra: Record<string, string> = {}): AppConfig {
   return loadConfig({ NODE_ENV: "test", DATABASE_URL: inject("dbUrl"), REFERENCE_DATE: "2026-10-20", ENABLE_DEV_ENDPOINTS: "true", AUTH_SCRYPT_LOG2N: "10", RATE_LIMIT_ENABLED: "false", ...extra } as NodeJS.ProcessEnv);
 }
 
-/** Real sessions (created like a login would) returned as Authorization headers: { u_riya: { authorization: "Bearer sos_..." } }. */
 export async function tokensFor(ctx: AppContext, ids: string[]): Promise<Record<string, Record<string, string>>> {
   const out: Record<string, Record<string, string>> = {};
   for (const id of ids) out[id] = { authorization: `Bearer ${(await createSession(ctx.db, id, { ttlHours: 24 })).token}` };
@@ -30,7 +28,6 @@ export async function testContext(o: { embedding?: boolean; llm?: LlmProvider | 
   });
 }
 
-/** Tiny in-process HTTP mock used for provider tests (no real network). */
 import { createServer, type Server } from "node:http";
 export async function mockServer(handler: (req: { url: string; method: string; headers: Record<string, any>; body: any }) => { status?: number; json?: unknown; text?: string }): Promise<{ url: string; calls: any[]; close: () => Promise<void> }> {
   const calls: any[] = [];
