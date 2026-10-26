@@ -3,11 +3,6 @@ import { promisify } from "node:util";
 
 const scrypt = promisify(scryptCb) as (pw: string, salt: Buffer, keylen: number, opts: { N: number; r: number; p: number; maxmem: number }) => Promise<Buffer>;
 
-/**
- * Password hashing with scrypt (memory-hard KDF, built into Node — no native dependency).
- * Stored format is self-describing so parameters can be raised later and old hashes upgraded on login:
- *     scrypt$<N>$<r>$<p>$<salt base64>$<hash base64>
- */
 export const KEYLEN = 64;
 const R = 8;
 const P = 1;
@@ -32,7 +27,6 @@ export function parseHash(stored: string): Parsed | null {
   return { N, r, p, salt: Buffer.from(parts[4]!, "base64"), hash: Buffer.from(parts[5]!, "base64") };
 }
 
-/** Constant-time verification. Returns false (never throws) for malformed stored hashes. */
 export async function verifyPassword(password: string, stored: string): Promise<boolean> {
   const parsed = parseHash(stored);
   if (!parsed || password.length > MAX_PASSWORD_LENGTH) return false;
@@ -40,18 +34,15 @@ export async function verifyPassword(password: string, stored: string): Promise<
   return derived.length === parsed.hash.length && timingSafeEqual(derived, parsed.hash);
 }
 
-/** True if the stored hash used weaker parameters than the current target (rehash on next successful login). */
 export function needsRehash(stored: string, log2N: number): boolean {
   const p = parseHash(stored);
   return !p || p.N < 2 ** log2N;
 }
 
-// A small list of the most common passwords (length-valid ones); a real deployment should use a breached-password service (e.g. k-anonymity range API).
 const COMMON = new Set(
   ("password123 1234567890 qwertyuiop password1234 iloveyou123 letmein1234 welcome1234 admin12345 changeme123 passw0rd123 qwerty12345 1q2w3e4r5t abcdefghij abc1234567 11111111111 0123456789 987654321 123456789a password!1 p@ssw0rd123 football123 baseball123 monkey12345 dragon12345 sunshine123 princess123 trustno1234").split(/\s+/),
 );
 
-/** Returns human-readable problems; an empty array means the password is acceptable. */
 export function passwordProblems(password: string, ctx: { email?: string; displayName?: string } = {}): string[] {
   const out: string[] = [];
   const pw = password.normalize("NFKC");
