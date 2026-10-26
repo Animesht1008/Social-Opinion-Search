@@ -23,14 +23,13 @@ function subtractMonths(now: Date, months: number): Date {
   return d;
 }
 
-/** Deterministic baseline parser ("rule-v1"). Runs without any API key. */
 export function parseQueryRules(query: string, ctx: ParseContext): Intent {
   const q = query.trim();
   const lower = q.toLowerCase();
   const constraints: HardConstraint[] = [];
   const soft: string[] = [];
   const ambiguities: string[] = [];
-  const consumed: string[] = []; // phrases removed from keyword extraction
+  const consumed: string[] = []; 
   let city: string | null = null;
   let neighborhood: string | null = null;
 
@@ -85,7 +84,6 @@ export function parseQueryRules(query: string, ctx: ParseContext): Intent {
   const best = Object.entries(topicVotes).sort((a, b) => b[1] - a[1])[0]!;
   const topic = best[1] > 0 ? best[0] : null;
 
-  // --- hard constraints (verifiable) ---
   const firsthand = /\b(first-?hand|personal experiences?|actually (?:stayed|been|visited|lived|gone|went)|(?:people|those|someone|anyone) who (?:actually )?(?:stayed|visited|lived|went|have been))\b/i.exec(q);
   if (firsthand) {
     constraints.push({ kind: "firsthand_only", value: true, text: firsthand[0], verifiable: true, source: "rule" });
@@ -111,7 +109,6 @@ export function parseQueryRules(query: string, ctx: ParseContext): Intent {
     consumed.push(channelM[0]);
   }
 
-  // --- unverifiable hard constraints (explicit "must ..." phrasing we cannot check against a stored field) ---
   let residue = q;
   for (const c of constraints) residue = residue.replace(c.text, " ");
   const re = /\b(must|has to|have to|needs? to|without)\s+([^,.;?]{3,50})/gi;
@@ -122,7 +119,6 @@ export function parseQueryRules(query: string, ctx: ParseContext): Intent {
     consumed.push(text);
   }
 
-  // --- temporal / soft ---
   const recent = /\b(recent|recently|latest|lately|these days|nowadays|currently|up[- ]to[- ]date)\b/i.test(q);
   const comp = COMPANIONS.exec(q);
   if (comp) {
@@ -164,7 +160,6 @@ export function parseQueryRules(query: string, ctx: ParseContext): Intent {
   });
 }
 
-/** Adds API-supplied filters as explicit hard constraints (source "api"), overriding parsed ones of the same kind. */
 export function applyApiFilters(intent: Intent, f: ApiFilters | undefined): Intent {
   if (!f) return intent;
   const out: Intent = structuredClone(intent);
@@ -189,7 +184,7 @@ export function applyApiFilters(intent: Intent, f: ApiFilters | undefined): Inte
 }
 
 // ---------------------------------------------------------------------------------------------
-// Optional LLM-assisted parsing. Output is schema-validated and *grounded* against the query text.
+// Optional LLM-assisted parsing. 
 // ---------------------------------------------------------------------------------------------
 
 const LLM_SYSTEM = `You convert a user's natural-language question about places into a JSON object. Return ONLY JSON.
