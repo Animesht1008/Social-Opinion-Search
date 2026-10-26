@@ -4,11 +4,8 @@ const isoDate = z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "expected YYYY-MM-DD");
 
 export const HardConstraintSchema = z.object({
   kind: z.enum(["city", "category", "firsthand_only", "since", "channel", "source_type", "data_source", "unverifiable"]),
-  /** city/category: string; firsthand_only: true; since: YYYY-MM-DD; channel: string[]; unverifiable: free text */
   value: z.union([z.string(), z.boolean(), z.array(z.string())]),
-  /** The phrase (or API field) this constraint came from. */
   text: z.string(),
-  /** True if the system can enforce it as a filter on stored fields. */
   verifiable: z.boolean(),
   source: z.enum(["rule", "llm", "api"]),
 });
@@ -16,12 +13,10 @@ export type HardConstraint = z.infer<typeof HardConstraintSchema>;
 
 export const IntentSchema = z.object({
   rawQuery: z.string(),
-  /** "rule-v1" or "llm:<model>+rule-v1-grounding". */
   parser: z.string(),
   topic: z.string().nullable(),
   location: z.object({ city: z.string().nullable(), neighborhood: z.string().nullable() }),
   aspects: z.array(z.string()),
-  /** Content keywords for lexical retrieval (constraint/topic words removed). */
   keywords: z.array(z.string()),
   hardConstraints: z.array(HardConstraintSchema),
   softPreferences: z.array(z.string()),
@@ -36,7 +31,6 @@ export const IntentSchema = z.object({
 });
 export type Intent = z.infer<typeof IntentSchema>;
 
-/** What the LLM is asked to return. Everything is re-validated and grounded against the query text afterwards. */
 export const LlmIntentSchema = z.object({
   city: z.string().nullable().default(null),
   neighborhood: z.string().nullable().default(null),
@@ -66,7 +60,6 @@ export const FiltersSchema = z
   .strict();
 export type ApiFilters = z.infer<typeof FiltersSchema>;
 
-/** Filters actually enforced in SQL, derived from verifiable hard constraints. */
 export interface HardFilters {
   city?: string;
   category?: string;

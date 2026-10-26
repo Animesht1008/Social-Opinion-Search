@@ -1,7 +1,6 @@
 import type { AppContext } from "../../context.js";
 import { opinionsMissingEmbedding, upsertEmbedding } from "../../db/embeddings-store.js";
 
-/** Embeds every opinion that has no vector for the configured model. Idempotent. Used by the CLI and by dataset import --embed. */
 export async function indexMissingEmbeddings(ctx: AppContext, opts: { batch?: number; onProgress?: (done: number, total: number) => void } = {}): Promise<{ done: number; failed: number; total: number }> {
   const p = ctx.embedding;
   if (!p) throw new Error("No embedding provider configured (EMBEDDING_PROVIDER=none).");

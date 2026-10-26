@@ -1,9 +1,3 @@
-/**
- * Small, honest tuning experiment. Parameters are CHOSEN ON THE DEV SPLIT ONLY and then reported on the held-out
- * TEST split. With 33 queries this is a weak protocol (see docs/EVALUATION.md); it exists to avoid tuning on the
- * numbers we report, not to claim optimality.
- *   npm run tune
- */
 import { loadConfig } from "../src/config/env.js";
 import { createContext } from "../src/context.js";
 import { runEvaluation, type EvalConfig } from "../src/modules/evaluation/runner.js";

@@ -4,10 +4,9 @@ import type { AppConfig } from "../../config/env.js";
 import { ProviderError } from "../../shared/errors.js";
 
 export interface LlmProvider {
-  readonly id: string; // provider and configured model identifier
+  readonly id: string; 
   readonly kind: "anthropic" | "openai";
   readonly model: string;
-  /** Ask for a JSON object and validate it. Throws ProviderError on transport/shape failures. */
   generateJson<T>(args: { system: string; user: string; schema: ZodType<T>; maxTokens?: number; timeoutMs: number }): Promise<T>;
 }
 
@@ -19,7 +18,6 @@ export interface LlmStatus {
   note: string;
 }
 
-/** Extract the first top-level JSON object from model text (tolerates code fences / preamble). */
 export function extractJsonObject(text: string): unknown {
   const cleaned = text.replace(/```(?:json)?/gi, "").trim();
   const start = cleaned.indexOf("{");
@@ -138,7 +136,7 @@ function parseModelJson<T>(text: string, schema: ZodType<T>, provider: string): 
 
 export function createLlmProvider(cfg: AppConfig): LlmProvider | null {
   if (cfg.LLM_PROVIDER === "none") return null;
-  const key = cfg.LLM_API_KEY!; // presence validated in loadConfig
+  const key = cfg.LLM_API_KEY!;
   if (cfg.LLM_PROVIDER === "anthropic") return new AnthropicProvider(cfg.LLM_MODEL, key, cfg.LLM_BASE_URL ?? "https://api.anthropic.com");
   return new OpenAiChatProvider(cfg.LLM_MODEL, key, cfg.LLM_BASE_URL ?? "https://api.openai.com/v1");
 }

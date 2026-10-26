@@ -1,26 +1,17 @@
 import { z } from "zod";
 
-/**
- * Known public sources and the terms they come with. This file is where licence claims live, so every claim is
- * traceable to what was actually read (see docs/DATASETS.md "What was verified"). Nothing here ships any data.
- */
 export const SourceMetaSchema = z.object({
   id: z.string().regex(/^[a-z0-9][a-z0-9-]{2,60}$/, "id: lowercase letters, digits, dashes"),
-  /** Short code used in pseudonymous author ids (pub_<code>_...). */
   shortCode: z.string().regex(/^[a-z0-9]{3,10}$/),
   name: z.string().min(3).max(160),
   description: z.string().max(800).optional(),
   url: z.string().url(),
-  /** Short licence label stored and shown in the UI. */
   license: z.string().min(2).max(200),
-  /** Identifier the operator must pass to --accept-license to acknowledge the terms. */
   licenseId: z.string().min(2).max(60),
   licenseUrl: z.string().url().optional(),
   attribution: z.string().min(3).max(400),
   commercialUseAllowed: z.boolean(),
-  /** false => text is stored for private analysis but hidden from users in production (policy: DATASET_ALLOW_RESTRICTED). */
   publicDisplayAllowed: z.boolean(),
-  /** Reviews on this platform can only be written after a stay/visit, so imported rows may be marked firsthand. */
   assumeFirsthand: z.boolean().default(true),
   adapter: z.enum(["tripadvisor-dyadic", "inside-airbnb", "generic-csv"]),
   geography: z.string().max(300).optional(),

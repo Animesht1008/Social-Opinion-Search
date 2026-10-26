@@ -11,15 +11,12 @@ import { registerSecurity } from "./routes/security.js";
 import { AppError } from "./shared/errors.js";
 
 const here = dirname(fileURLToPath(import.meta.url));
-// Works from src/ (tsx) and from dist/src/ (compiled): use the first ../public that exists.
 const publicDir = [join(here, "..", "public"), join(here, "..", "..", "public")].find((p) => existsSync(join(p, "index.html"))) ?? join(here, "..", "public");
 
 export async function buildApp(ctx: AppContext, opts: { logger?: boolean; serveUi?: boolean } = {}): Promise<FastifyInstance> {
   const app = Fastify({ logger: opts.logger ?? false, bodyLimit: 16 * 1024, requestTimeout: 60_000, trustProxy: ctx.config.TRUST_PROXY });
   registerSecurity(app, ctx);
 
-  // JSON bodies: an empty body is treated as {} (so action endpoints like /accept can be POSTed without a payload);
-  // malformed JSON is still a 400. The 16 KB bodyLimit above applies.
   app.addContentTypeParser("application/json", { parseAs: "string" }, (_req, body, done) => {
     const text = typeof body === "string" ? body : body.toString("utf8");
     if (text.trim() === "") return done(null, {});

@@ -1,13 +1,3 @@
-/**
- * Downloads pretrained GloVe vectors (gensim-data release of glove-wiki-gigaword-<dim>) and converts the
- * top-N most frequent words into the compact binary format read by src/modules/embeddings/glove.ts.
- *
- *   Source : https://github.com/RaRe-Technologies/gensim-data/releases (tag glove-wiki-gigaword-100)
- *   Origin : Stanford GloVe 6B (Wikipedia 2014 + Gigaword 5), https://nlp.stanford.edu/projects/glove/
- *   Licence: Public Domain Dedication and License v1.0 (PDDL). Cite Pennington, Socher & Manning, EMNLP 2014.
- *
- * Usage: npm run embeddings:glove [-- --dim 100 --top 100000]
- */
 import { createWriteStream, mkdirSync, writeFileSync } from "node:fs";
 import { createGunzip } from "node:zlib";
 import { createInterface } from "node:readline";

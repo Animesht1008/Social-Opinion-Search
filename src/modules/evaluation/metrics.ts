@@ -1,5 +1,3 @@
-/** Pure metric functions (no I/O) so they are unit-testable with hand-computed expectations. */
-
 export const REL_THRESHOLD = 2; // grade >= 2 counts as relevant for precision / recall
 export const STRICT_THRESHOLD = 3;
 

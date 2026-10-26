@@ -1,13 +1,6 @@
 import { createHash, randomBytes } from "node:crypto";
 import type { Db } from "../../db/client.js";
 
-/**
- * Opaque server-side sessions.
- *  - token  : 32 random bytes (256 bits) base64url, prefixed "sos_" so leaked tokens are recognisable in secret scanners.
- *  - storage: only SHA-256(token) is stored. A database leak therefore does not reveal usable tokens
- *             (SHA-256 is appropriate here because the token is high-entropy random, unlike a password).
- *  - revocation is a row delete; expiry is checked on every lookup.
- */
 export const TOKEN_PREFIX = "sos_";
 const TOUCH_INTERVAL_MS = 5 * 60 * 1000;
 
@@ -31,7 +24,6 @@ export async function createSession(db: Db, userId: string, opts: { ttlHours: nu
   return { token, expiresAt };
 }
 
-/** Returns the signed-in user for a token, or null if it is unknown, expired, or the account is disabled. */
 export async function lookupSession(db: Db, token: string, now = new Date()): Promise<SessionUser | null> {
   if (!looksLikeToken(token)) return null;
   const tokenHash = hashToken(token);

@@ -1,8 +1,3 @@
-/**
- * Convenience downloader for a file you are entitled to fetch (you give the URL).
- *   npm run dataset:download -- --url https://example.org/file.csv --out data/datasets/raw/file.csv [--max-mb 500]
- * Prints the SHA-256 so you can record it. Does not unzip. Does not bypass any access controls.
- */
 import { createHash } from "node:crypto";
 import { createWriteStream, mkdirSync } from "node:fs";
 import { dirname } from "node:path";

@@ -16,7 +16,6 @@ export async function registerAccountRoutes(app: FastifyInstance, ctx: AppContex
   const secure = cookieSecure(ctx.config);
   const ttlSeconds = ctx.config.AUTH_SESSION_TTL_HOURS * 3600;
 
-  /** Creates a session and returns it either as an HttpOnly cookie (default) or in the body (mode "token" for API clients). */
   async function startSession(req: FastifyRequest, reply: FastifyReply, userId: string, mode: "cookie" | "token") {
     const { token, expiresAt } = await createSession(ctx.db, userId, { ttlHours: ctx.config.AUTH_SESSION_TTL_HOURS, userAgent: req.headers["user-agent"] as string | undefined });
     if (Math.random() < 0.02) void purgeExpiredSessions(ctx.db).catch(() => {}); // opportunistic cleanup
@@ -24,7 +23,6 @@ export async function registerAccountRoutes(app: FastifyInstance, ctx: AppContex
     return { expiresAt, ...(mode === "token" ? { token } : {}) };
   }
 
-  // Public bootstrap info for the UI (no secrets).
   app.get("/api/v1/auth/config", async () => {
     return { registrationOpen: ctx.config.AUTH_ALLOW_REGISTRATION, passwordMinLength: MIN_PASSWORD_LENGTH, sessionTtlHours: ctx.config.AUTH_SESSION_TTL_HOURS, authMethods: ["cookie", "bearer"] };
   });
@@ -57,7 +55,6 @@ export async function registerAccountRoutes(app: FastifyInstance, ctx: AppContex
     return { user: publicUser(s), session: { expiresAt: s.expiresAt } };
   });
 
-  // Idempotent: always succeeds, always clears the cookie.
   app.post("/api/v1/auth/logout", async (req, reply) => {
     const s = await getSession(ctx, req);
     if (s) await revokeSession(ctx.db, s.tokenHash);

@@ -13,16 +13,13 @@ export class LicenseNotAccepted extends Error {
 
 export interface ImportOptions {
   meta: SourceMeta;
-  /** Review files (e.g. one CSV per city, or reviews.csv). */
   files: string[];
-  /** Inside Airbnb listings.csv (for neighbourhoods). */
   listingsFile?: string;
   city?: string;
   map?: Record<string, string>;
   category?: string;
   acceptLicense?: string;
   limit?: number;
-  /** Deterministic sampling rate in (0,1]; decided per record id so re-runs pick the same rows. */
   sample?: number;
   onlyCities?: string[];
   append?: boolean;
@@ -49,7 +46,6 @@ export interface ImportReport {
 
 const BATCH = 500;
 
-/** Removes everything previously imported from a source (pseudonymous authors cascade to their opinions). */
 export async function removeDataset(db: Db, meta: SourceMeta): Promise<number> {
   const r = await db.user.deleteMany({ where: { id: { startsWith: `pub_${meta.shortCode}_` } } });
   await db.opinion.deleteMany({ where: { provenanceSource: meta.id } });
@@ -79,8 +75,6 @@ export async function importDataset(db: Db, o: ImportOptions): Promise<ImportRep
   const adapterOpts: AdapterOptions = { map: o.map, city: o.city, listings, category: o.category };
   const onlyCities = o.onlyCities?.map((c) => c.toLowerCase());
 
-  // Pre-flight: validate the layout of the first file (and its first row) BEFORE anything destructive happens,
-  // so a wrong file or wrong --map never wipes data that was imported earlier.
   if (o.files.length === 0) throw new AdapterError("No input files given.");
   for await (const row of readCsv(o.files[0]!)) { adapter.prepare(Object.keys(row), adapterOpts); break; }
 
@@ -89,7 +83,6 @@ export async function importDataset(db: Db, o: ImportOptions): Promise<ImportRep
     if (!o.append) await removeDataset(db, meta);
   }
 
-  // Pseudonymisation key: random per import run and never stored => pseudonyms cannot be reversed or linked across imports.
   const key = randomBytes(32);
   const pseudonym = (k: string) => createHmac("sha256", key).update(`${meta.id}|${k}`).digest("hex").slice(0, 12);
 

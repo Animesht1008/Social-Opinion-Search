@@ -1,8 +1,3 @@
-/**
- * Runs the offline benchmark and writes reports/latest.json + reports/latest.md.
- *   npm run eval                 -> full run (modes + ablations + leak sweep)
- *   npm run eval -- --no-ablate  -> core modes only
- */
 import { mkdirSync, writeFileSync } from "node:fs";
 import { loadConfig } from "../src/config/env.js";
 import { createContext } from "../src/context.js";

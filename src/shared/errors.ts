@@ -1,4 +1,3 @@
-/** Application error with a stable machine-readable code and an HTTP status. */
 export class AppError extends Error {
   constructor(
     public readonly code: string,

@@ -1,11 +1,6 @@
 import { contentStems } from "../../shared/text.js";
 import type { EmbeddingProvider } from "./provider.js";
 
-/**
- * TEST-ONLY deterministic feature-hashing "embedding". It is a bag-of-stems hash, i.e. lexical overlap in disguise:
- * it exists so integration tests can exercise vector storage, pgvector queries and hybrid merging offline.
- * It must never be reported as semantic search and is excluded from evaluation metrics.
- */
 export class TestHashEmbeddingProvider implements EmbeddingProvider {
   readonly kind = "test-only" as const;
   readonly modelKey: string = "test-hash-v1";

@@ -1,8 +1,3 @@
-/**
- * Small, dependency-free text utilities used by the rule-based parser, the aspect extractor,
- * the reranker (specificity / near-duplicate detection) and the GloVe embedding provider.
- */
-
 export const STOPWORDS = new Set(
   (
     "a an the and or but if then else of at by for with about against between into through during before after above below to from up down in out on off over under " +
@@ -12,7 +7,6 @@ export const STOPWORDS = new Set(
   ).split(/\s+/),
 );
 
-/** Meta words that describe the *task* rather than the content being searched. */
 export const QUERY_META_WORDS = new Set(
   (
     "find show tell give recommend suggest suggestion looking look want need needs wanted searching search consider considering suitable good best great nice " +

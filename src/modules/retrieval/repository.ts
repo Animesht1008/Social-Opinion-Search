@@ -4,7 +4,6 @@ import type { HardFilters } from "../query-understanding/intent.js";
 import { toVectorLiteral } from "../../db/embeddings-store.js";
 import type { OpinionRecord } from "./types.js";
 
-/** Metadata + hard-constraint filters. All values are bound parameters. */
 export function filterSql(ctx: AccessContext, f: HardFilters, alias = "o"): Prisma.Sql {
   const a = Prisma.raw(alias);
   const parts: Prisma.Sql[] = [authorizationSql(ctx, alias)];
@@ -23,7 +22,6 @@ export function filterSql(ctx: AccessContext, f: HardFilters, alias = "o"): Pris
   return Prisma.join(parts, " AND ");
 }
 
-/** Builds an OR-tsquery from keywords. Tokens are restricted to [a-z0-9] so the string is safe for to_tsquery. */
 export function buildTsQuery(keywords: string[]): string | null {
   const toks = [...new Set(keywords.map((k) => k.toLowerCase().replace(/[^a-z0-9]/g, "")).filter((k) => k.length >= 2))];
   return toks.length ? toks.join(" | ") : null;
@@ -49,7 +47,6 @@ export async function semanticSearch(db: Db, ctx: AccessContext, f: HardFilters,
     LIMIT ${limit}`);
 }
 
-/** Lexical scores for a given id set (used to complete component scores of candidates found by the other retriever). */
 export async function lexicalScoresFor(db: Db, ctx: AccessContext, f: HardFilters, tsQuery: string, ids: string[]): Promise<Map<string, number>> {
   if (ids.length === 0) return new Map();
   const rows = await db.$queryRaw<{ id: string; score: number }[]>(Prisma.sql`
@@ -69,7 +66,6 @@ export async function semanticScoresFor(db: Db, ctx: AccessContext, f: HardFilte
   return new Map(rows.map((r) => [r.id, r.score]));
 }
 
-/** Hydrates records with authors, places and aspects; re-applies the authorization predicate in SQL. */
 export async function fetchOpinions(db: Db, ctx: AccessContext, ids: string[]): Promise<OpinionRecord[]> {
   if (ids.length === 0) return [];
   const rows = await db.$queryRaw<any[]>(Prisma.sql`

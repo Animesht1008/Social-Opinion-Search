@@ -1,9 +1,3 @@
-/**
- * Applies every prisma/migrations/<name>/migration.sql in order using plain `pg`, tracking applied names in `_sos_migrations`.
- * This is a fallback for environments where the Prisma schema engine binary cannot be downloaded
- * (e.g. network-restricted CI/sandboxes). The normal path is `npm run db:migrate` (prisma migrate deploy).
- * Do not mix the two on the same database.
- */
 import "dotenv/config";
 import { readdirSync, readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";

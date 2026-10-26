@@ -1,4 +1,3 @@
-/** Embeds every opinion that has no vector for the configured model. Idempotent; safe to re-run. */
 import { loadConfig } from "../src/config/env.js";
 import { createContext } from "../src/context.js";
 import { countEmbeddings, countOpinions } from "../src/db/embeddings-store.js";

@@ -1,12 +1,3 @@
-/**
- * Import a public dataset you have downloaded yourself. Nothing is downloaded or bundled by this project.
- *
- *   npm run dataset:list
- *   npm run dataset:import -- --dataset tripadvisor-dyadic-2022 --file path/to/city.csv [--file ...] --accept-license CC-BY-NC-4.0 [--limit 5000] [--sample 0.2] [--only-cities "London,Delhi"] [--embed] [--dry-run] [--append]
- *   npm run dataset:import -- --dataset inside-airbnb --file reviews.csv --listings listings.csv --city "Lisbon" --accept-license INSIDE-AIRBNB-POLICY
- *   npm run dataset:import -- --dataset generic --meta my-source.json --file data.csv --map text=Review,date=Date,city=City,category=const:restaurant --accept-license <licenseId from your meta file>
- *   npm run dataset:remove -- --dataset <id>
- */
 import { readFileSync } from "node:fs";
 import { loadConfig } from "../src/config/env.js";
 import { createContext } from "../src/context.js";

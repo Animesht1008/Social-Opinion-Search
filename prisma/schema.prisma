@@ -1,8 +1,3 @@
-// Social Opinion Search — data model.
-// Postgres-specific pieces Prisma cannot express (tsvector generated column, GIN index,
-// pgvector extension, CHECK constraints) live in the hand-written migration SQL.
-// See docs/DECISIONS.md (D-02, D-03).
-
 generator client {
   provider = "prisma-client"
   output   = "../src/generated/prisma"
@@ -25,7 +20,6 @@ enum RelationshipStatus {
   BLOCKED
 }
 
-/// Who may read an opinion. Enforced in SQL before any row leaves the database.
 enum Visibility {
   PUBLIC        // any authenticated requester
   CONNECTIONS   // author's ACCEPTED connections (any type)

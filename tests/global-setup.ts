@@ -14,11 +14,6 @@ declare module "vitest" {
   }
 }
 
-/**
- * Prepares an isolated test database: fresh schema -> migrations -> deterministic seed -> TEST-ONLY hash embeddings
- * (so vector storage / pgvector queries / hybrid merging can be tested offline). If PostgreSQL is unreachable,
- * integration tests are skipped LOUDLY (see the console message) rather than silently passing.
- */
 export default async function setup(project: TestProject) {
   const url = process.env.TEST_DATABASE_URL ?? "postgresql://sos:sos_dev_password@localhost:5432/social_opinion_test";
   const dbName = new URL(url).pathname.replace(/^\//, "");

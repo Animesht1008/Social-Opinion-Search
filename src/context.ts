@@ -41,7 +41,6 @@ export function createLimiters(c: AppConfig): Limiters {
   };
 }
 
-/** Ids of data sources that must not be shown to other users under the current deployment policy. */
 export async function hiddenDataSources(ctx: Pick<AppContext, "db" | "config">): Promise<string[]> {
   if (allowRestrictedData(ctx.config)) return [];
   const rows = await ctx.db.dataSource.findMany({ where: { publicDisplayAllowed: false }, select: { id: true } });
@@ -51,7 +50,6 @@ export async function hiddenDataSources(ctx: Pick<AppContext, "db" | "config">):
 export async function createContext(config: AppConfig = loadConfig(), overrides: Partial<Pick<AppContext, "embedding" | "llm" | "web" | "params">> = {}): Promise<AppContext> {
   const db = createPrisma(config.DATABASE_URL);
   const embedding = "embedding" in overrides ? (overrides.embedding ?? null) : await createEmbeddingProvider(config);
-  // The semantic admission threshold depends on the embedding model; a-priori defaults per provider kind (tuned in docs/EVALUATION.md).
   const params = overrides.params ?? DEFAULT_PARAMS;
   return {
     config,

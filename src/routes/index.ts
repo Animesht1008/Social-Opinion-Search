@@ -31,7 +31,6 @@ export async function registerRoutes(app: FastifyInstance, ctx: AppContext) {
     return { status: db === "ok" ? "ok" : "degraded", database: db, pgvector, time: ctx.now().toISOString(), providers: { embedding, ...providerSummary(ctx) } };
   });
 
-  // The requester's own graph summary (ids only; see GET /api/v1/relationships for names and management).
   app.get("/api/v1/me/access", async (req) => {
     const id = await requireUser(ctx, req);
     const a = await loadAccessContext(ctx.db, id, ctx.circleRule, await hiddenDataSources(ctx));
@@ -68,7 +67,6 @@ export async function registerRoutes(app: FastifyInstance, ctx: AppContext) {
     };
   });
 
-  // Search runs are visible only to the user who ran them (404, not 403, so ids cannot be probed). They contain ids and scores, never text.
   app.get<{ Params: { id: string } }>("/api/v1/search-runs/:id", async (req) => {
     const uid = await requireUser(ctx, req);
     const idParsed = z.string().uuid().safeParse(req.params.id);
@@ -99,7 +97,6 @@ export async function registerRoutes(app: FastifyInstance, ctx: AppContext) {
     return { id: run.id, createdAt: run.createdAt, config: run.config, summary: run.summary, perQuery: run.perQuery };
   });
 
-  // Public metadata about every corpus: provenance, licence, attribution, counts and whether it may be displayed.
   app.get("/api/v1/data-sources", async () => {
     const hidden = new Set(await hiddenDataSources(ctx));
     const sources = await ctx.db.dataSource.findMany({ orderBy: { id: "asc" } });

@@ -1,6 +1,4 @@
-/* Social Opinion Search — inspector UI.
- * Security notes: all dynamic text is inserted with textContent/createTextNode (never innerHTML), there are no inline
- * scripts/styles (the server sends a strict CSP), and authentication is an HttpOnly session cookie the script cannot read. */
+/* Social Opinion Search — inspector UI. */
 const $ = (id) => document.getElementById(id);
 const state = { user: null, config: null, sources: [] };
 

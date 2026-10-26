@@ -1,4 +1,3 @@
-/** Tiny argv parser: --flag, --key value, repeated --key value collected into arrays. */
 export function parseArgs(argv: string[]): { flags: Set<string>; values: Map<string, string[]> } {
   const flags = new Set<string>();
   const values = new Map<string, string[]>();
