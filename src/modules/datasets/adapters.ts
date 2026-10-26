@@ -2,7 +2,6 @@ import { createReadStream } from "node:fs";
 import { parse } from "csv-parse";
 import { canonicalCity, normalizeRating, parseDate, shortHash } from "./clean.js";
 
-/** One review as read from a source file, before cleaning/filtering. */
 export interface RawReview {
   externalId: string;
   text: string;
@@ -11,7 +10,6 @@ export interface RawReview {
   category: string;
   writtenAt: Date;
   rating?: number | null;
-  /** Reviewer key from the source (pseudonymised on import; the reviewer's name is never read). */
   authorKey?: string | null;
 }
 export type RowResult = RawReview | { skip: string };
@@ -20,7 +18,6 @@ export class AdapterError extends Error {}
 
 const norm = (h: string) => h.toLowerCase().replace(/[^a-z0-9]/g, "");
 
-/** Finds the real header for the first matching alias (case/punctuation-insensitive). */
 export function pick(headers: string[], aliases: string[]): string | undefined {
   const map = new Map(headers.map((h) => [norm(h), h]));
   for (const a of aliases) { const h = map.get(norm(a)); if (h) return h; }
@@ -38,7 +35,6 @@ function need(headers: string[], what: string, aliases: string[], override?: str
   return h;
 }
 
-/** Parses `--map text=Review,city=City,category=const:restaurant`. */
 export function parseMap(s: string | undefined): Record<string, string> {
   const out: Record<string, string> = {};
   for (const part of (s ?? "").split(",").map((x) => x.trim()).filter(Boolean)) {
@@ -54,10 +50,6 @@ export interface Adapter { id: string; prepare(headers: string[], o: AdapterOpti
 
 const valueOf = (spec: string | undefined, row: Record<string, string>): string | undefined => (spec === undefined ? undefined : row[spec]);
 
-// ------------------------------------------------------------------------------------------------
-// TripAdvisor "Dyadic Context" restaurant reviews. Column names are taken from the record's description and
-// matched case-insensitively with aliases; this adapter has NOT been run against the real files (see docs/DATASETS.md).
-// ------------------------------------------------------------------------------------------------
 const tripadvisorDyadic: Adapter = {
   id: "tripadvisor-dyadic",
   prepare(headers, o) {
@@ -88,10 +80,6 @@ const tripadvisorDyadic: Adapter = {
   },
 };
 
-// ------------------------------------------------------------------------------------------------
-// Inside Airbnb: reviews.csv (listing_id, id, date, reviewer_id, reviewer_name, comments) joined with listings.csv.
-// The reviewer's NAME is never read.
-// ------------------------------------------------------------------------------------------------
 const AUTOMATED = /^(the host canceled this reservation|the reservation was canceled|this is an automated posting|automated posting)/i;
 const insideAirbnb: Adapter = {
   id: "inside-airbnb",
@@ -116,10 +104,6 @@ const insideAirbnb: Adapter = {
   },
 };
 
-// ------------------------------------------------------------------------------------------------
-// Generic CSV: you supply the column mapping. Required: text, date, city (or --city). Optional: id, neighborhood, category, rating, author.
-// Any value may be a constant: category=const:restaurant
-// ------------------------------------------------------------------------------------------------
 const genericCsv: Adapter = {
   id: "generic-csv",
   prepare(headers, o) {
@@ -152,7 +136,6 @@ const genericCsv: Adapter = {
 
 export const ADAPTERS: Record<string, Adapter> = { "tripadvisor-dyadic": tripadvisorDyadic, "inside-airbnb": insideAirbnb, "generic-csv": genericCsv };
 
-/** Streams a CSV file as row objects (RFC 4180: quoted fields, embedded newlines/quotes, BOM). */
 export async function* readCsv(file: string): AsyncGenerator<Record<string, string>> {
   const parser = createReadStream(file).pipe(parse({ columns: (h: string[]) => h.map((x) => x.trim()), bom: true, relax_quotes: true, relax_column_count: true, skip_empty_lines: true, skip_records_with_error: true }));
   for await (const rec of parser) yield rec as Record<string, string>;
@@ -163,7 +146,6 @@ export async function readHeaders(file: string): Promise<string[]> {
   throw new AdapterError(`${file} has no data rows.`);
 }
 
-/** Loads Inside Airbnb's listings.csv into id -> neighbourhood. */
 export async function loadListings(file: string): Promise<Map<string, { neighborhood: string | null }>> {
   const out = new Map<string, { neighborhood: string | null }>();
   let idCol: string | undefined, hoodCol: string | undefined;
