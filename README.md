@@ -12,7 +12,7 @@ A natural-language **social-opinion retrieval and ranking engine**. The hard pro
 * Fastify API · PostgreSQL 16 + Prisma 7 · pgvector · Zod validation · Vitest (179 tests)
 * Three distinct retrieval modes: **lexical** (PostgreSQL FTS), **semantic** (pgvector cosine over stored embeddings), **hybrid** (union by id + reranker). Without an embedding provider, semantic/hybrid return `503 SEMANTIC_RETRIEVAL_UNAVAILABLE`; an explicit `allowFallback=true` returns a clearly labelled lexical result.
 * Query understanding: validated structured intent (entity/location, aspects, hard constraints, soft preferences, temporal, evidence characteristics, ambiguities) from a deterministic parser, optionally LLM-assisted with schema validation and grounding against the query text. Unverifiable "must" constraints are disclosed, never silently applied.
-* Inspectable ranking: lexical, semantic, aspect coverage, context, specificity/firsthand, provenance, freshness, redundancy, polarity (as an evidence characteristic). Relevance-first and social-aware ranking. Duplicate collapsing, MMR diversity and conflict balancing. [RANKING](docs/RANKING.md)
+* Inspectable ranking: lexical, semantic, aspect coverage, context, specificity/firsthand, provenance, freshness, redundancy, polarity (as an evidence characteristic). Relevance-first and social-aware ranking. Duplicate collapsing, MMR diversity and conflict balancing. 
 * Evidence-linked neighborhood summaries for hotel-area, cafe and restaurant queries: aggregate positive, negative, mixed and neutral aspect signals over the selected opinions, with evidence IDs and explicit caveats (not an objective place-quality or safety ranking).
 * Explicit social graph (accepted / pending / blocked), configurable inner circle, authorization enforced in SQL **and** re-checked in code before ranking, logging, and LLM prompts.
 * Three evidence channels (inner circle · wider social/public · web/AI) with disclosed fallback; grounded answers with validated citations and a deterministic fallback; honest *insufficient evidence* responses.
@@ -70,13 +70,6 @@ Opinion text is inserted with `textContent` only; there are no inline scripts/st
 | hybrid (social-aware) | 0.800 | 0.842 | 0.967 | 5.4 |
 
 Hybrid − lexical ΔNDCG@5 = +0.112 (95% bootstrap CI +0.031…+0.208); social-aware vs relevance-first −0.020 (CI −0.058…+0.017, i.e. no measurable difference in *content* relevance). **Unauthorized leaks: 0** in 594 sweep searches. Known failures cluster around negated/polarised *query* intent. These are benchmark results on author-written synthetic data, not real-world accuracy.
-
-
-## Data: synthetic corpus, user posts, and public datasets
-* `data/seed/` (users, relationships, places, opinions) and `data/eval/` (queries, judgments, aspect labels) are fully synthetic; every row is flagged `is_synthetic` with data source `synthetic-seed-v1`. The benchmark is pinned to this corpus.
-* Users' own posts have source `user-generated` and are never part of the benchmark.
-* **Public datasets are not bundled.** You download them from their official sites, accept their terms, and import with `npm run dataset:import` (details, licences, what was and was not verified: [docs/DATASETS.md](docs/DATASETS.md)). Supported: TripAdvisor "Dyadic Context" restaurant reviews (CC BY-NC 4.0 — non-commercial), Inside Airbnb (private analysis only; "do not republish"), and a generic mapper for any CSV you may use. Reviewer identities are pseudonymised, emails/links/phone-like numbers are masked, and each source's licence, attribution, geography, date range and limitations are stored and shown in the UI.
-* **Honest status:** the importer is verified on fixtures that imitate the documented layouts. No real dataset file could be downloaded in the build environment, so the first real import is yours; `npm run dataset:verify` checks it.
 
 ## Project tree
 ```
