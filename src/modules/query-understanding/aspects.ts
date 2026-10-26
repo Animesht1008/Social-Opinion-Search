@@ -1,11 +1,3 @@
-/**
- * Rule-based aspect lexicon ("lexicon-v1").
- *
- * IMPORTANT: this is a transparent concept heuristic, NOT semantic search. It is used for
- *  (a) the aspect-coverage ranking signal, (b) polarity/contradiction display, and (c) intent parsing.
- * It is deliberately independent of the manually annotated evaluation judgments (which carry their own aspect labels).
- * Terms are matched on stems (see shared/text.ts). Multi-word entries match consecutive stems.
- */
 import { splitSentences, stem, tokenize } from "../../shared/text.js";
 
 export type PolarityLabel = "POSITIVE" | "NEGATIVE" | "MIXED" | "NEUTRAL";
@@ -13,12 +5,9 @@ export type PolarityLabel = "POSITIVE" | "NEGATIVE" | "MIXED" | "NEUTRAL";
 export interface AspectDef {
   id: string;
   label: string;
-  /** Mentions of the aspect (any one is enough). */
   terms: string[];
-  /** Cues that, near a mention, make the stance favourable / unfavourable for the place. */
   pos: string[];
   neg: string[];
-  /** Context aspects (e.g. time of day) are matched but have no polarity. */
   context?: boolean;
 }
 
