@@ -28,9 +28,7 @@ export interface OpinionRecord {
 
 export interface RawCandidate {
   id: string;
-  /** ts_rank_cd with normalization 32 (rank/(rank+1)) in [0,1); null if the opinion did not match lexically. */
   lexical: number | null;
-  /** cosine similarity in [-1,1]; null if no embedding for the active model. */
   semantic: number | null;
   lexicalRank: number | null;
   semanticRank: number | null;
