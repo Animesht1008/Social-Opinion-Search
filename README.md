@@ -198,7 +198,6 @@ Hybrid − lexical ΔNDCG@5 = +0.112 (95% bootstrap CI +0.031…+0.208); social-
 │       └── text.ts
 ├── tests/
 │   ├── fixtures/
-│   │   ├── README.md
 │   │   ├── airbnb-listings.csv
 │   │   ├── airbnb-reviews.csv
 │   │   └── dyadic-sample.csv
