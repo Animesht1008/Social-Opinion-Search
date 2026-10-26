@@ -1,8 +1,3 @@
-# syntax=docker/dockerfile:1
-# Production image for Social Opinion Search.
-# NOT built with Docker in the authoring environment (no Docker available there); the same steps were
-# simulated by hand (npm ci -> prisma generate -> npm run build -> npm prune --omit=dev -> node dist/src/server.js).
-
 # ---------- build stage ----------
 FROM node:22-slim AS build
 WORKDIR /app
