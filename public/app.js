@@ -69,11 +69,15 @@ function resetWorkspace() {
   $("form-search").reset();
   $("query").value = "";
   $("results").hidden = true;
-  $("results").querySelectorAll(".panel").forEach((panel) => panel.replaceChildren());
+  for (const id of ["status", "intent", "answerBox", "online-suggestions", "recommendations", "selected", "balance", "candidates"]) {
+    $(id).replaceChildren();
+  }
+  $("online-suggestions-panel").hidden = true;
   showMsg($("search-error"), "");
   $("source-filter").replaceChildren();
   $("circle-line").textContent = "";
-  for (const id of ["tab-circle", "tab-mine", "tab-eval", "tab-account"]) $(id).replaceChildren();
+  for (const id of ["tab-circle", "tab-mine", "tab-account"]) $(id).replaceChildren();
+  $("evalBox").textContent = "Loading…";
   state.sources = [];
   switchTab("search");
 }
