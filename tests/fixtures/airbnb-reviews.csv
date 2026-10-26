@@ -1,0 +1,7 @@
+listing_id,id,date,reviewer_id,reviewer_name,comments
+1001,9001,2020-02-10,555,Marcos,The street was well lit and we felt comfortable walking back at night. Marcos was a very helpful host and the flat was clean and quiet.
+1001,9002,2020-03-01,556,Joana,Lovely stay but the metro is far and taxis were hard to get late at night; the lane outside is dark and a bit empty after midnight.
+1002,9003,2020-04-15,555,Marcos,"Great location in Baixa with plenty of restaurants and people around until late, but it can be noisy at night so bring earplugs."
+1002,9004,2020-05-20,557,Alicia,The host canceled this reservation 10 days before arrival. This is an automated posting.
+9999,9005,2020-06-01,558,Zed,This listing id does not exist in the listings file but the review text is long enough to pass the filters and is in English.
+1001,9006,not a date,559,Pia,The apartment was spotless and the host replied fast to every message we sent during the whole stay with us.

@@ -1,0 +1,51 @@
+{
+  "name": "social-opinion-search",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Query-conditioned social-opinion retrieval and ranking engine (lexical / semantic / hybrid) with grounded answers and an offline benchmark.",
+  "type": "module",
+  "engines": {
+    "node": ">=20.11"
+  },
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/src/server.js",
+    "build": "tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:unit": "vitest run tests/unit",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "db:migrate:sql": "tsx scripts/apply-migrations.ts",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:reset": "tsx scripts/reset-db.ts",
+    "embeddings:glove": "tsx scripts/fetch-glove.ts",
+    "embeddings:index": "tsx scripts/index-embeddings.ts",
+    "eval": "tsx scripts/run-eval.ts",
+    "tune": "tsx scripts/tune.ts",
+    "user:admin": "tsx scripts/user-admin.ts",
+    "dataset:list": "tsx scripts/dataset-import.ts list",
+    "dataset:import": "tsx scripts/dataset-import.ts import",
+    "dataset:remove": "tsx scripts/dataset-import.ts remove",
+    "dataset:download": "tsx scripts/dataset-download.ts",
+    "dataset:verify": "tsx scripts/dataset-verify.ts"
+  },
+  "dependencies": {
+    "@fastify/static": "^10.1.6",
+    "@prisma/adapter-pg": "^7.10.1",
+    "@prisma/client": "^7.10.1",
+    "csv-parse": "^7.0.3",
+    "dotenv": "^18.0.8",
+    "fastify": "^5.12.7",
+    "pg": "^8.23.1",
+    "prisma": "^7.10.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/pg": "^8.23.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.5"
+  }
+}

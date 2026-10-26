@@ -1,0 +1,10 @@
+node_modules
+dist
+src/generated
+.env
+.git
+reports
+data/models
+tests
+docs
+*.log

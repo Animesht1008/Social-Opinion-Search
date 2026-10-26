@@ -1,0 +1,107 @@
+[
+ {
+  "id": "u_riya",
+  "displayName": "Riya Sharma",
+  "note": "demo requester with an inner circle"
+ },
+ {
+  "id": "u_aman",
+  "displayName": "Aman Verma",
+  "note": "demo requester with a different graph"
+ },
+ {
+  "id": "u_zoya",
+  "displayName": "Zoya Khan",
+  "note": "demo requester with no relationships"
+ },
+ {
+  "id": "u_meera",
+  "displayName": "Meera Sharma",
+  "note": "Riya's sister"
+ },
+ {
+  "id": "u_kabir",
+  "displayName": "Kabir Rao",
+  "note": "Riya's close friend"
+ },
+ {
+  "id": "u_nisha",
+  "displayName": "Nisha Iyer",
+  "note": "Riya's close friend"
+ },
+ {
+  "id": "u_dev",
+  "displayName": "Dev Malhotra",
+  "note": "accepted friend of Riya (low closeness); Aman's close friend"
+ },
+ {
+  "id": "u_sana",
+  "displayName": "Sana Qureshi",
+  "note": "Riya's colleague"
+ },
+ {
+  "id": "u_tara",
+  "displayName": "Tara Bose",
+  "note": "pending request with Riya; Aman's family"
+ },
+ {
+  "id": "u_neel",
+  "displayName": "Neel Joshi",
+  "note": "pending request to Riya"
+ },
+ {
+  "id": "u_vik",
+  "displayName": "Vikram Sethi",
+  "note": "blocked by Riya"
+ },
+ {
+  "id": "u_ishaan",
+  "displayName": "Ishaan Kapoor",
+  "note": "Aman's friend; unrelated to Riya"
+ },
+ {
+  "id": "u_pooja",
+  "displayName": "Pooja Nair",
+  "note": "Aman's colleague; unrelated to Riya"
+ },
+ {
+  "id": "u_pub1",
+  "displayName": "Public reviewer 1",
+  "note": "synthetic public review corpus author"
+ },
+ {
+  "id": "u_pub2",
+  "displayName": "Public reviewer 2",
+  "note": "synthetic public review corpus author"
+ },
+ {
+  "id": "u_pub3",
+  "displayName": "Public reviewer 3",
+  "note": "synthetic public review corpus author"
+ },
+ {
+  "id": "u_pub4",
+  "displayName": "Public reviewer 4",
+  "note": "synthetic public review corpus author"
+ },
+ {
+  "id": "u_pub5",
+  "displayName": "Public reviewer 5",
+  "note": "synthetic public review corpus author"
+ },
+ {
+  "id": "u_pub6",
+  "displayName": "Public reviewer 6",
+  "note": "synthetic public review corpus author"
+ },
+ {
+  "id": "u_pub7",
+  "displayName": "Public reviewer 7",
+  "note": "synthetic public review corpus author"
+ },
+ {
+  "id": "u_pub8",
+  "displayName": "Public reviewer 8",
+  "note": "synthetic public review corpus author"
+ }
+]

@@ -1,0 +1,515 @@
+{
+"_note": "Manual aspect labels per opinion, authored independently of the rule-based lexicon extractor. Used only for aspect-coverage evaluation.",
+"labels": {
+"op_m01": [
+"lighting",
+"activity_isolation",
+"transport",
+"late_night"
+],
+"op_m02": [
+"lighting",
+"activity_isolation",
+"transport",
+"late_night"
+],
+"op_m03": [],
+"op_m04": [
+"activity_isolation",
+"late_night",
+"police_security"
+],
+"op_m05": [
+"lighting",
+"activity_isolation",
+"transport",
+"late_night"
+],
+"op_m06": [
+"lighting",
+"harassment_crime",
+"transport",
+"late_night"
+],
+"op_m07": [
+"transport",
+"late_night"
+],
+"op_m08": [
+"lighting",
+"transport",
+"police_security",
+"late_night"
+],
+"op_m09": [
+"noise",
+"price"
+],
+"op_m10": [
+"activity_isolation",
+"transport",
+"late_night"
+],
+"op_m11": [
+"lighting",
+"activity_isolation",
+"late_night"
+],
+"op_m12": [
+"transport",
+"lighting",
+"activity_isolation",
+"late_night"
+],
+"op_m13": [
+"transport",
+"late_night"
+],
+"op_m14": [
+"activity_isolation",
+"transport",
+"police_security",
+"late_night"
+],
+"op_m15": [
+"lighting",
+"activity_isolation",
+"transport",
+"late_night"
+],
+"op_m16": [
+"activity_isolation",
+"late_night"
+],
+"op_m17": [
+"transport",
+"activity_isolation",
+"late_night"
+],
+"op_m18": [
+"lighting",
+"harassment_crime",
+"activity_isolation",
+"late_night"
+],
+"op_m19": [
+"police_security",
+"transport"
+],
+"op_m20": [
+"lighting",
+"activity_isolation",
+"transport",
+"late_night"
+],
+"op_m21": [
+"lighting",
+"activity_isolation",
+"transport",
+"late_night"
+],
+"op_m22": [
+"food_quality",
+"service",
+"hygiene"
+],
+"op_m23": [],
+"op_m24": [
+"transport",
+"police_security",
+"late_night"
+],
+"op_m25": [
+"activity_isolation",
+"lighting",
+"late_night"
+],
+"op_m26": [
+"lighting",
+"transport",
+"perceived_safety",
+"late_night"
+],
+"op_m27": [
+"perceived_safety",
+"harassment_crime",
+"late_night"
+],
+"op_m28": [
+"perceived_safety",
+"late_night"
+],
+"op_m29": [],
+"op_m30": [
+"service"
+],
+"op_m31": [
+"lighting",
+"harassment_crime",
+"late_night"
+],
+"op_m32": [
+"lighting",
+"activity_isolation",
+"transport",
+"late_night"
+],
+"op_m33": [
+"lighting",
+"activity_isolation",
+"transport",
+"late_night"
+],
+"op_m34": [
+"lighting",
+"activity_isolation",
+"perceived_safety",
+"late_night"
+],
+"op_m35": [
+"lighting",
+"transport",
+"activity_isolation",
+"late_night"
+],
+"op_m36": [
+"activity_isolation",
+"lighting",
+"transport",
+"late_night"
+],
+"op_m37": [
+"harassment_crime",
+"late_night"
+],
+"op_m38": [
+"activity_isolation",
+"police_security",
+"transport",
+"late_night"
+],
+"op_m39": [
+"activity_isolation",
+"transport",
+"lighting",
+"late_night"
+],
+"op_m40": [
+"lighting",
+"activity_isolation",
+"police_security",
+"late_night"
+],
+"op_m41": [
+"perceived_safety"
+],
+"op_m42": [
+"activity_isolation",
+"lighting",
+"late_night"
+],
+"op_m43": [
+"activity_isolation",
+"transport",
+"police_security",
+"late_night"
+],
+"op_b01": [
+"wifi",
+"power_outlets",
+"work_friendly"
+],
+"op_b02": [
+"wifi",
+"power_outlets",
+"food_quality"
+],
+"op_b03": [
+"power_outlets",
+"wifi",
+"work_friendly",
+"noise"
+],
+"op_b04": [
+"work_friendly",
+"seating"
+],
+"op_b05": [
+"noise",
+"wifi",
+"power_outlets"
+],
+"op_b06": [
+"seating",
+"wifi",
+"power_outlets"
+],
+"op_b07": [
+"noise",
+"food_quality"
+],
+"op_b08": [
+"noise",
+"wifi",
+"work_friendly"
+],
+"op_b09": [
+"price",
+"wifi"
+],
+"op_b10": [
+"noise",
+"price",
+"power_outlets"
+],
+"op_b11": [
+"seating",
+"wifi"
+],
+"op_b12": [
+"wifi",
+"power_outlets",
+"seating",
+"work_friendly"
+],
+"op_b13": [
+"work_friendly",
+"wifi",
+"power_outlets",
+"noise"
+],
+"op_b14": [
+"wifi",
+"food_quality"
+],
+"op_b15": [
+"food_quality"
+],
+"op_b16": [
+"wifi"
+],
+"op_b17": [
+"food_quality",
+"service"
+],
+"op_b18": [
+"food_quality"
+],
+"op_b19": [
+"wifi",
+"power_outlets",
+"work_friendly"
+],
+"op_b20": [
+"noise",
+"work_friendly",
+"service"
+],
+"op_b21": [
+"power_outlets",
+"wifi",
+"work_friendly"
+],
+"op_b22": [
+"noise"
+],
+"op_b23": [
+"wifi",
+"power_outlets",
+"work_friendly"
+],
+"op_g01": [
+"noise",
+"beach_access",
+"walkability"
+],
+"op_g02": [
+"noise"
+],
+"op_g03": [
+"noise",
+"beach_access"
+],
+"op_g04": [
+"nightlife",
+"noise"
+],
+"op_g05": [
+"nightlife",
+"noise"
+],
+"op_g06": [
+"noise",
+"nightlife",
+"beach_access"
+],
+"op_g07": [
+"noise"
+],
+"op_g08": [
+"noise",
+"beach_access",
+"nightlife"
+],
+"op_g09": [
+"nightlife",
+"noise"
+],
+"op_g10": [
+"nightlife",
+"noise"
+],
+"op_g11": [
+"noise",
+"beach_access",
+"food_quality",
+"walkability"
+],
+"op_g12": [
+"food_quality"
+],
+"op_g13": [
+"beach_access",
+"walkability",
+"price"
+],
+"op_g14": [
+"noise",
+"beach_access"
+],
+"op_g15": [
+"noise",
+"beach_access",
+"food_quality",
+"walkability"
+],
+"op_j01": [
+"vegetarian",
+"food_quality",
+"service"
+],
+"op_j02": [
+"vegetarian",
+"food_quality",
+"hygiene",
+"price"
+],
+"op_j03": [
+"vegetarian"
+],
+"op_j04": [
+"hygiene",
+"food_quality"
+],
+"op_j05": [
+"food_quality",
+"price"
+],
+"op_j06": [
+"food_quality"
+],
+"op_j07": [
+"vegetarian",
+"hygiene",
+"service"
+],
+"op_j08": [
+"service",
+"food_quality",
+"price"
+],
+"op_j09": [
+"food_quality",
+"price"
+],
+"op_j10": [
+"hygiene"
+],
+"op_j11": [
+"vegetarian",
+"food_quality"
+],
+"op_j12": [
+"vegetarian",
+"price",
+"hygiene",
+"service"
+],
+"op_j13": [
+"vegetarian",
+"food_quality",
+"service"
+],
+"op_j14": [
+"price",
+"food_quality",
+"service"
+],
+"op_j15": [
+"vegetarian",
+"food_quality",
+"service"
+],
+"op_d01": [
+"transport",
+"noise",
+"hygiene"
+],
+"op_d02": [
+"airport_access",
+"transport",
+"noise",
+"hygiene"
+],
+"op_d03": [
+"transport",
+"airport_access",
+"activity_isolation",
+"lighting"
+],
+"op_d04": [
+"transport",
+"nightlife"
+],
+"op_d05": [
+"transport",
+"noise",
+"airport_access"
+],
+"op_d06": [
+"harassment_crime",
+"hygiene",
+"perceived_safety"
+],
+"op_d07": [
+"transport",
+"noise",
+"price",
+"airport_access"
+],
+"op_d08": [
+"price",
+"food_quality"
+],
+"op_d09": [
+"airport_access",
+"transport"
+],
+"op_d10": [
+"lighting",
+"nightlife",
+"noise",
+"transport"
+],
+"op_d11": [
+"transport",
+"airport_access",
+"noise"
+],
+"op_d12": [
+"transport",
+"police_security",
+"lighting"
+]
+}
+}

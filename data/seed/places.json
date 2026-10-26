@@ -1,0 +1,44 @@
+[
+ {
+  "id": "pl_marine_drive",
+  "name": "Marine Drive promenade",
+  "type": "promenade",
+  "city": "Mumbai",
+  "neighborhood": "Marine Drive"
+ },
+ {
+  "id": "pl_bandstand",
+  "name": "Bandra Bandstand promenade",
+  "type": "promenade",
+  "city": "Mumbai",
+  "neighborhood": "Bandra"
+ },
+ {
+  "id": "pl_causeway",
+  "name": "Colaba Causeway",
+  "type": "street",
+  "city": "Mumbai",
+  "neighborhood": "Colaba"
+ },
+ {
+  "id": "pl_agonda",
+  "name": "Agonda beach",
+  "type": "beach",
+  "city": "Goa",
+  "neighborhood": "Agonda"
+ },
+ {
+  "id": "pl_palolem",
+  "name": "Palolem beach",
+  "type": "beach",
+  "city": "Goa",
+  "neighborhood": "Palolem"
+ },
+ {
+  "id": "pl_cp",
+  "name": "Connaught Place",
+  "type": "district",
+  "city": "Delhi",
+  "neighborhood": "Connaught Place"
+ }
+]

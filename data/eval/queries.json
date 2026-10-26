@@ -1,0 +1,583 @@
+[
+ {
+  "id": "q01",
+  "requesterId": "u_riya",
+  "query": "I'm visiting Mumbai with my sister. Find a hotel area suitable for returning late at night; consider lighting, isolation and transport.",
+  "hardConstraints": {
+   "city": "Mumbai"
+  },
+  "expectedAspects": [
+   "lighting",
+   "activity_isolation",
+   "transport"
+  ],
+  "tags": [
+   "headline",
+   "multi_aspect",
+   "indirect",
+   "inner_circle_available"
+  ],
+  "expectInsufficient": false,
+  "split": "dev"
+ },
+ {
+  "id": "q02",
+  "requesterId": "u_riya",
+  "query": "Which areas in Mumbai have working street lights and people around after midnight?",
+  "hardConstraints": {
+   "city": "Mumbai"
+  },
+  "expectedAspects": [
+   "lighting",
+   "activity_isolation"
+  ],
+  "tags": [
+   "multi_aspect",
+   "direct"
+  ],
+  "expectInsufficient": false,
+  "split": "test"
+ },
+ {
+  "id": "q03",
+  "requesterId": "u_riya",
+  "query": "Is it hard to get a cab or auto in Mumbai late at night near the hotel?",
+  "hardConstraints": {
+   "city": "Mumbai"
+  },
+  "expectedAspects": [
+   "transport"
+  ],
+  "tags": [
+   "direct",
+   "negative_evidence"
+  ],
+  "expectInsufficient": false,
+  "split": "dev"
+ },
+ {
+  "id": "q04",
+  "requesterId": "u_riya",
+  "query": "Where in Mumbai can I walk back alone after dinner without feeling nervous?",
+  "hardConstraints": {
+   "city": "Mumbai"
+  },
+  "expectedAspects": [
+   "activity_isolation"
+  ],
+  "tags": [
+   "indirect",
+   "no_keyword_overlap"
+  ],
+  "expectInsufficient": false,
+  "split": "test"
+ },
+ {
+  "id": "q05",
+  "requesterId": "u_riya",
+  "query": "Any reports of harassment or theft near Bandra hotels?",
+  "hardConstraints": {
+   "city": "Mumbai"
+  },
+  "expectedAspects": [
+   "harassment_crime"
+  ],
+  "tags": [
+   "negative_evidence",
+   "neighborhood_inferred"
+  ],
+  "expectInsufficient": false,
+  "split": "dev"
+ },
+ {
+  "id": "q06",
+  "requesterId": "u_riya",
+  "query": "Mumbai hotel area for returning late at night, from people who actually stayed there; I care about lighting and transport.",
+  "hardConstraints": {
+   "city": "Mumbai",
+   "firsthandOnly": true
+  },
+  "expectedAspects": [
+   "lighting",
+   "transport"
+  ],
+  "tags": [
+   "hard_constraint_firsthand",
+   "multi_aspect"
+  ],
+  "expectInsufficient": false,
+  "split": "test"
+ },
+ {
+  "id": "q07",
+  "requesterId": "u_riya",
+  "query": "What do people say about Colaba at night in the last 6 months?",
+  "hardConstraints": {
+   "city": "Mumbai",
+   "since": "2026-04-20"
+  },
+  "expectedAspects": [],
+  "tags": [
+   "hard_constraint_time",
+   "neighborhood_inferred"
+  ],
+  "expectInsufficient": false,
+  "split": "dev"
+ },
+ {
+  "id": "q08",
+  "requesterId": "u_riya",
+  "query": "What do only my close friends say about hotel areas in Mumbai at night?",
+  "hardConstraints": {
+   "city": "Mumbai",
+   "channels": [
+    "inner_circle"
+   ]
+  },
+  "expectedAspects": [],
+  "tags": [
+   "hard_constraint_channel",
+   "inner_circle"
+  ],
+  "expectInsufficient": false,
+  "split": "test"
+ },
+ {
+  "id": "q09",
+  "requesterId": "u_aman",
+  "query": "Delhi hotel area close to the airport with easy metro access",
+  "hardConstraints": {
+   "city": "Delhi"
+  },
+  "expectedAspects": [
+   "airport_access",
+   "transport"
+  ],
+  "tags": [
+   "no_inner_circle_evidence",
+   "wider_fallback",
+   "unauthorized_private"
+  ],
+  "expectInsufficient": false,
+  "split": "dev"
+ },
+ {
+  "id": "q10",
+  "requesterId": "u_zoya",
+  "query": "Hotel area in Mumbai where I can come back late at night, think about lighting, isolation and transport",
+  "hardConstraints": {
+   "city": "Mumbai"
+  },
+  "expectedAspects": [
+   "lighting",
+   "activity_isolation",
+   "transport"
+  ],
+  "tags": [
+   "wider_only",
+   "unauthorized_private",
+   "multi_aspect"
+  ],
+  "expectInsufficient": false,
+  "split": "test"
+ },
+ {
+  "id": "q11",
+  "requesterId": "u_aman",
+  "query": "Where in Mumbai should we stay so we can get home at 1 am: lit streets, people around, taxis?",
+  "hardConstraints": {
+   "city": "Mumbai"
+  },
+  "expectedAspects": [
+   "lighting",
+   "activity_isolation",
+   "transport"
+  ],
+  "tags": [
+   "social_graph_variation",
+   "inner_circle_available",
+   "multi_aspect"
+  ],
+  "expectInsufficient": false,
+  "split": "dev"
+ },
+ {
+  "id": "q12",
+  "requesterId": "u_riya",
+  "query": "Cafe in Bengaluru with fast wifi and plenty of power sockets for a full day of work",
+  "hardConstraints": {
+   "city": "Bengaluru"
+  },
+  "expectedAspects": [
+   "wifi",
+   "power_outlets",
+   "work_friendly"
+  ],
+  "tags": [
+   "multi_aspect",
+   "direct"
+  ],
+  "expectInsufficient": false,
+  "split": "test"
+ },
+ {
+  "id": "q13",
+  "requesterId": "u_riya",
+  "query": "Where can I take long video calls at a cafe without being rushed or interrupted?",
+  "hardConstraints": {},
+  "expectedAspects": [
+   "wifi",
+   "work_friendly",
+   "noise"
+  ],
+  "tags": [
+   "indirect",
+   "multi_aspect"
+  ],
+  "expectInsufficient": false,
+  "split": "dev"
+ },
+ {
+  "id": "q14",
+  "requesterId": "u_riya",
+  "query": "Quiet cafe in Bengaluru where I can sit and read, I don't need wifi",
+  "hardConstraints": {
+   "city": "Bengaluru"
+  },
+  "expectedAspects": [
+   "noise"
+  ],
+  "tags": [
+   "indirect",
+   "contradiction_on_wifi"
+  ],
+  "expectInsufficient": false,
+  "split": "test"
+ },
+ {
+  "id": "q15",
+  "requesterId": "u_riya",
+  "query": "Which Bengaluru cafes are overpriced?",
+  "hardConstraints": {
+   "city": "Bengaluru"
+  },
+  "expectedAspects": [
+   "price"
+  ],
+  "tags": [
+   "negative_evidence",
+   "sparse_relevant"
+  ],
+  "expectInsufficient": false,
+  "split": "dev"
+ },
+ {
+  "id": "q16",
+  "requesterId": "u_riya",
+  "query": "Bengaluru cafes with great coffee that are not good for working on a laptop",
+  "hardConstraints": {
+   "city": "Bengaluru"
+  },
+  "expectedAspects": [
+   "work_friendly"
+  ],
+  "tags": [
+   "contradiction",
+   "multi_aspect"
+  ],
+  "expectInsufficient": false,
+  "split": "test"
+ },
+ {
+  "id": "q17",
+  "requesterId": "u_aman",
+  "query": "Fast reliable wifi cafe in Bengaluru",
+  "hardConstraints": {
+   "city": "Bengaluru"
+  },
+  "expectedAspects": [
+   "wifi"
+  ],
+  "tags": [
+   "social_graph_variation",
+   "inner_circle_available",
+   "unauthorized_private"
+  ],
+  "expectInsufficient": false,
+  "split": "dev"
+ },
+ {
+  "id": "q18",
+  "requesterId": "u_riya",
+  "query": "Quiet beach stay in Goa where I can sleep without music",
+  "hardConstraints": {
+   "city": "Goa"
+  },
+  "expectedAspects": [
+   "noise",
+   "beach_access"
+  ],
+  "tags": [
+   "multi_aspect",
+   "negative_evidence",
+   "near_duplicates"
+  ],
+  "expectInsufficient": false,
+  "split": "test"
+ },
+ {
+  "id": "q19",
+  "requesterId": "u_riya",
+  "query": "Goa stay close to the beach that is easy to walk to",
+  "hardConstraints": {
+   "city": "Goa"
+  },
+  "expectedAspects": [
+   "beach_access",
+   "walkability"
+  ],
+  "tags": [
+   "multi_aspect"
+  ],
+  "expectInsufficient": false,
+  "split": "dev"
+ },
+ {
+  "id": "q20",
+  "requesterId": "u_zoya",
+  "query": "Quiet place to stay in Goa for sleeping",
+  "hardConstraints": {
+   "city": "Goa"
+  },
+  "expectedAspects": [
+   "noise"
+  ],
+  "tags": [
+   "wider_only",
+   "unauthorized_private"
+  ],
+  "expectInsufficient": false,
+  "split": "test"
+ },
+ {
+  "id": "q21",
+  "requesterId": "u_riya",
+  "query": "Vegetarian friendly restaurants in Jaipur with Jain options",
+  "hardConstraints": {
+   "city": "Jaipur"
+  },
+  "expectedAspects": [
+   "vegetarian"
+  ],
+  "tags": [
+   "direct",
+   "near_duplicates"
+  ],
+  "expectInsufficient": false,
+  "split": "dev"
+ },
+ {
+  "id": "q22",
+  "requesterId": "u_riya",
+  "query": "Is the food hygienic in Jaipur restaurants? Any hygiene problems?",
+  "hardConstraints": {
+   "city": "Jaipur"
+  },
+  "expectedAspects": [
+   "hygiene"
+  ],
+  "tags": [
+   "negative_evidence"
+  ],
+  "expectInsufficient": false,
+  "split": "test"
+ },
+ {
+  "id": "q23",
+  "requesterId": "u_riya",
+  "query": "Best cheap kachori or street food in Jaipur",
+  "hardConstraints": {
+   "city": "Jaipur"
+  },
+  "expectedAspects": [
+   "food_quality",
+   "price"
+  ],
+  "tags": [
+   "multi_aspect"
+  ],
+  "expectInsufficient": false,
+  "split": "dev"
+ },
+ {
+  "id": "q24",
+  "requesterId": "u_riya",
+  "query": "I'm visiting Lisbon alone, which hotel area is safe at night?",
+  "hardConstraints": {
+   "city": "Lisbon"
+  },
+  "expectedAspects": [],
+  "tags": [
+   "empty_results",
+   "unknown_location"
+  ],
+  "expectInsufficient": true,
+  "split": "test"
+ },
+ {
+  "id": "q25",
+  "requesterId": "u_riya",
+  "query": "Cafes in Jaipur with good wifi for remote work",
+  "hardConstraints": {
+   "city": "Jaipur"
+  },
+  "expectedAspects": [
+   "wifi"
+  ],
+  "tags": [
+   "empty_results",
+   "insufficient_evidence"
+  ],
+  "expectInsufficient": true,
+  "split": "dev"
+ },
+ {
+  "id": "q26",
+  "requesterId": "u_riya",
+  "query": "Is Paharganj noisy or unsafe at night for a hotel stay?",
+  "hardConstraints": {
+   "city": "Delhi"
+  },
+  "expectedAspects": [
+   "noise",
+   "perceived_safety"
+  ],
+  "tags": [
+   "neighborhood_inferred",
+   "multi_aspect",
+   "contradiction"
+  ],
+  "expectInsufficient": false,
+  "split": "test"
+ },
+ {
+  "id": "q27",
+  "requesterId": "u_riya",
+  "query": "Delhi hotel area near the airport with metro access",
+  "hardConstraints": {
+   "city": "Delhi"
+  },
+  "expectedAspects": [
+   "airport_access",
+   "transport"
+  ],
+  "tags": [
+   "multi_aspect",
+   "direct"
+  ],
+  "expectInsufficient": false,
+  "split": "dev"
+ },
+ {
+  "id": "q28",
+  "requesterId": "u_riya",
+  "query": "Quiet Delhi hotel area where I can sleep well",
+  "hardConstraints": {
+   "city": "Delhi"
+  },
+  "expectedAspects": [
+   "noise"
+  ],
+  "tags": [
+   "direct",
+   "negative_evidence"
+  ],
+  "expectInsufficient": false,
+  "split": "test"
+ },
+ {
+  "id": "q29",
+  "requesterId": "u_riya",
+  "query": "In the last year, which Mumbai areas had trouble with taxis or autos late at night?",
+  "hardConstraints": {
+   "city": "Mumbai",
+   "since": "2025-10-20"
+  },
+  "expectedAspects": [
+   "transport"
+  ],
+  "tags": [
+   "hard_constraint_time",
+   "negative_evidence"
+  ],
+  "expectInsufficient": false,
+  "split": "dev"
+ },
+ {
+  "id": "q30",
+  "requesterId": "u_riya",
+  "query": "Bandra West well lit busy until 1 am autos Uber",
+  "hardConstraints": {
+   "city": "Mumbai"
+  },
+  "expectedAspects": [
+   "lighting",
+   "transport"
+  ],
+  "tags": [
+   "duplicates",
+   "direct",
+   "keyword_style",
+   "neighborhood_inferred"
+  ],
+  "expectInsufficient": false,
+  "split": "test"
+ },
+ {
+  "id": "q31",
+  "requesterId": "u_riya",
+  "query": "Mumbai hotel area that must have a swimming pool and be safe at night",
+  "hardConstraints": {
+   "city": "Mumbai"
+  },
+  "expectedAspects": [
+   "perceived_safety"
+  ],
+  "tags": [
+   "unverifiable_constraint"
+  ],
+  "expectInsufficient": false,
+  "split": "dev"
+ },
+ {
+  "id": "q32",
+  "requesterId": "u_riya",
+  "query": "dark streets",
+  "hardConstraints": {},
+  "expectedAspects": [
+   "lighting"
+  ],
+  "tags": [
+   "short_query",
+   "direct"
+  ],
+  "expectInsufficient": false,
+  "split": "test"
+ },
+ {
+  "id": "q33",
+  "requesterId": "u_riya",
+  "query": "best hotel breakfast and spotless rooms",
+  "hardConstraints": {},
+  "expectedAspects": [
+   "food_quality",
+   "hygiene"
+  ],
+  "tags": [
+   "high_rated_irrelevant_for_other_queries",
+   "direct"
+  ],
+  "expectInsufficient": false,
+  "split": "dev"
+ }
+]

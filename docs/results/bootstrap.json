@@ -1,0 +1,42 @@
+{
+ "hybrid\u2212lexical": {
+  "n": 31,
+  "mean": 0.112,
+  "ci": [
+   0.031,
+   0.208
+  ],
+  "wins": 18,
+  "losses": 10
+ },
+ "hybrid\u2212semantic": {
+  "n": 31,
+  "mean": 0.135,
+  "ci": [
+   0.056,
+   0.223
+  ],
+  "wins": 18,
+  "losses": 7
+ },
+ "social-aware\u2212relevance-first": {
+  "n": 31,
+  "mean": -0.02,
+  "ci": [
+   -0.058,
+   0.017
+  ],
+  "wins": 7,
+  "losses": 12
+ },
+ "semantic\u2212lexical": {
+  "n": 31,
+  "mean": -0.023,
+  "ci": [
+   -0.099,
+   0.054
+  ],
+  "wins": 15,
+  "losses": 14
+ }
+}

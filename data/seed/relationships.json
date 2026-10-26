@@ -1,0 +1,98 @@
+[
+ {
+  "id": "rel_01",
+  "requesterId": "u_riya",
+  "addresseeId": "u_meera",
+  "type": "FAMILY",
+  "status": "ACCEPTED",
+  "closeness": 5
+ },
+ {
+  "id": "rel_02",
+  "requesterId": "u_riya",
+  "addresseeId": "u_kabir",
+  "type": "FRIEND",
+  "status": "ACCEPTED",
+  "closeness": 5
+ },
+ {
+  "id": "rel_03",
+  "requesterId": "u_riya",
+  "addresseeId": "u_nisha",
+  "type": "FRIEND",
+  "status": "ACCEPTED",
+  "closeness": 4
+ },
+ {
+  "id": "rel_04",
+  "requesterId": "u_riya",
+  "addresseeId": "u_dev",
+  "type": "FRIEND",
+  "status": "ACCEPTED",
+  "closeness": 2
+ },
+ {
+  "id": "rel_05",
+  "requesterId": "u_riya",
+  "addresseeId": "u_sana",
+  "type": "COLLEAGUE",
+  "status": "ACCEPTED",
+  "closeness": 3
+ },
+ {
+  "id": "rel_06",
+  "requesterId": "u_riya",
+  "addresseeId": "u_tara",
+  "type": "FRIEND",
+  "status": "PENDING",
+  "closeness": 4
+ },
+ {
+  "id": "rel_07",
+  "requesterId": "u_neel",
+  "addresseeId": "u_riya",
+  "type": "FRIEND",
+  "status": "PENDING",
+  "closeness": 4
+ },
+ {
+  "id": "rel_08",
+  "requesterId": "u_vik",
+  "addresseeId": "u_riya",
+  "type": "FRIEND",
+  "status": "BLOCKED",
+  "closeness": 3
+ },
+ {
+  "id": "rel_09",
+  "requesterId": "u_aman",
+  "addresseeId": "u_dev",
+  "type": "FRIEND",
+  "status": "ACCEPTED",
+  "closeness": 5
+ },
+ {
+  "id": "rel_10",
+  "requesterId": "u_aman",
+  "addresseeId": "u_ishaan",
+  "type": "FRIEND",
+  "status": "ACCEPTED",
+  "closeness": 4
+ },
+ {
+  "id": "rel_11",
+  "requesterId": "u_aman",
+  "addresseeId": "u_tara",
+  "type": "FAMILY",
+  "status": "ACCEPTED",
+  "closeness": 5
+ },
+ {
+  "id": "rel_12",
+  "requesterId": "u_aman",
+  "addresseeId": "u_pooja",
+  "type": "COLLEAGUE",
+  "status": "ACCEPTED",
+  "closeness": 3
+ }
+]

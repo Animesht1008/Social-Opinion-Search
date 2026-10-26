@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.env
+.env.*
+src/generated/
+data/models/*
+!data/models/.gitkeep
+reports/*
+!reports/.gitkeep
+*.log
+data/datasets/raw/*
+!data/datasets/raw/.gitkeep
+.env.example
+.env.example

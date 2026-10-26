@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Social Opinion Search</title>
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<header class="top">
+  <h1>Social Opinion Search <small></small></h1>
+  <div id="userbar" class="userbar" hidden>
+    <span id="whoami"></span>
+    <button type="button" id="btn-signout" class="btn ghost">Sign out</button>
+  </div>
+</header>
+
+<!-- ============ signed-out ============ -->
+<main id="auth" class="narrow" hidden>
+  <section class="panel authcard">
+    <div class="tabs small" role="tablist">
+      <button type="button" class="tab active" data-auth="login">Sign in</button>
+      <button type="button" class="tab" data-auth="register" id="tab-register">Create account</button>
+    </div>
+    <form id="form-login" class="stack" autocomplete="on">
+      <label>Email <input id="login-email" type="email" required autocomplete="username" maxlength="254" /></label>
+      <label>Password <input id="login-password" type="password" required autocomplete="current-password" maxlength="128" /></label>
+      <button type="submit" class="btn primary">Sign in</button>
+    </form>
+    <form id="form-register" class="stack" autocomplete="on" hidden>
+      <label>Display name <input id="reg-name" type="text" required minlength="2" maxlength="60" autocomplete="nickname" /></label>
+      <label>Email <input id="reg-email" type="email" required autocomplete="username" maxlength="254" /></label>
+      <label>Password <input id="reg-password" type="password" required autocomplete="new-password" maxlength="128" /></label>
+      <p id="pw-hint" class="muted"></p>
+      <button type="submit" class="btn primary">Create account</button>
+    </form>
+    <p id="auth-msg" class="msg" hidden></p>
+  </section>
+  <p class="muted center"></p>
+</main>
+
+<!-- ============ signed-in ============ -->
+<div id="app" hidden>
+  <nav class="tabs main" role="tablist">
+    <button type="button" class="tab active" data-tab="search">Search</button>
+    <button type="button" class="tab" data-tab="circle">My circle</button>
+    <button type="button" class="tab" data-tab="mine">My opinions</button>
+    <button type="button" class="tab" data-tab="eval">Evaluation</button>
+    <button type="button" class="tab" data-tab="account">Account</button>
+  </nav>
+
+  <main id="tab-search" class="page">
+    <section class="panel">
+      <form id="form-search" class="stack">
+        <label>What do you want to know?
+          <textarea id="query" rows="2" maxlength="500" minlength="3" required placeholder="Ask your Circle about Anything"></textarea>
+        </label>
+        <div class="row">
+          <label>Retrieval
+            <select id="mode"><option value="hybrid">hybrid</option><option value="lexical">keyword (lexical)</option><option value="semantic">semantic</option></select>
+          </label>
+          <label>Ranking
+            <select id="ranking"><option value="relevance_first">relevance-first</option><option value="social_aware">social-aware</option></select>
+          </label>
+          <label>Evidence limit <input id="limit" type="number" min="1" max="10" value="6" /></label>
+          <label class="chk"><input id="answer" type="checkbox" checked /> grounded answer</label>
+          <label class="chk"><input id="fallback" type="checkbox" /> allow lexical fallback</label>
+          <button type="submit" id="go" class="btn primary">Search</button>
+        </div>
+        <fieldset class="sources"><legend>Search in</legend><div id="source-filter" class="row"></div></fieldset>
+      </form>
+      <p id="circle-line" class="muted"></p>
+    </section>
+    <div id="search-error" class="msg error" hidden></div>
+    <div id="results" hidden>
+      <section class="panel" id="status"></section>
+      <section class="panel"><h2>Parsed intent</h2><div id="intent"></div></section>
+      <section class="panel"><h2>Answer</h2><div id="answerBox"></div></section>
+      <section class="panel" id="online-suggestions-panel" hidden>
+        <h2>Online suggestions</h2>
+        <p class="muted">Web-sourced suggestions are separate from your social evidence. Snippets may summarize visitor feedback; open the source for complete reviews and details.</p>
+        <div id="online-suggestions"></div>
+      </section>
+      <section class="panel"><h2>Neighborhood evidence overview</h2><p class="muted">Sentiment is derived from extracted opinion aspects; average star ratings are shown separately. These are not objective safety, quality, or popularity rankings.</p><div id="recommendations"></div></section>
+      <section class="panel"><h2>Selected evidence</h2><div id="selected"></div></section>
+      <section class="panel"><h2>Aspect balance &amp; suppressed duplicates</h2><div id="balance"></div></section>
+      <section class="panel"><h2>Candidates (top 40, component scores)</h2><div class="scroll" id="candidates"></div></section>
+    </div>
+  </main>
+
+  <main id="tab-circle" class="page" hidden></main>
+  <main id="tab-mine" class="page" hidden></main>
+  <main id="tab-eval" class="page" hidden><section class="panel"><div id="evalBox" class="muted">Loading…</div></section></main>
+  <main id="tab-account" class="page" hidden></main>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

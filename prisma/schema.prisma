@@ -1,0 +1,299 @@
+// Social Opinion Search — data model.
+// Postgres-specific pieces Prisma cannot express (tsvector generated column, GIN index,
+// pgvector extension, CHECK constraints) live in the hand-written migration SQL.
+// See docs/DECISIONS.md (D-02, D-03).
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum RelationshipType {
+  FRIEND
+  FAMILY
+  COLLEAGUE
+  ACQUAINTANCE
+}
+
+enum RelationshipStatus {
+  ACCEPTED
+  PENDING
+  BLOCKED
+}
+
+/// Who may read an opinion. Enforced in SQL before any row leaves the database.
+enum Visibility {
+  PUBLIC        // any authenticated requester
+  CONNECTIONS   // author's ACCEPTED connections (any type)
+  INNER_CIRCLE  // author's configured inner circle only
+  PRIVATE       // author only
+}
+
+enum SourceType {
+  SOCIAL_USER    // written by a user of the social network
+  PUBLIC_REVIEW  // item from a permitted public review corpus
+}
+
+enum Polarity {
+  POSITIVE
+  NEGATIVE
+  MIXED
+  NEUTRAL
+}
+
+enum RetrievalMode {
+  LEXICAL
+  SEMANTIC
+  HYBRID
+}
+
+enum RankingMode {
+  RELEVANCE_FIRST
+  SOCIAL_AWARE
+}
+
+model User {
+  id          String   @id
+  displayName String   @map("display_name")
+  isSynthetic Boolean  @default(true) @map("is_synthetic")
+  createdAt   DateTime @default(now()) @map("created_at")
+  /// Accounts that can sign in have an email (stored lowercase) and a scrypt password hash; synthetic authors have neither.
+  email        String?   @unique
+  passwordHash String?   @map("password_hash")
+  isActive     Boolean   @default(true) @map("is_active")
+  lastLoginAt  DateTime? @map("last_login_at")
+  sessions     Session[]
+
+  opinions              Opinion[]
+  sentRelationships     Relationship[] @relation("RelRequester")
+  receivedRelationships Relationship[] @relation("RelAddressee")
+  searchRuns            SearchRun[]
+  evalQueries           EvalQuery[]
+
+  @@map("users")
+}
+
+/// Server-side session. Only the SHA-256 of the opaque token is stored.
+model Session {
+  tokenHash  String   @id @map("token_hash")
+  userId     String   @map("user_id")
+  createdAt  DateTime @default(now()) @map("created_at")
+  expiresAt  DateTime @map("expires_at")
+  lastUsedAt DateTime @default(now()) @map("last_used_at")
+  userAgent  String?  @map("user_agent")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([expiresAt])
+  @@map("sessions")
+}
+
+/// Provenance + governance for every corpus an opinion can come from (synthetic seed, user posts, imported public datasets).
+model DataSource {
+  id                   String    @id
+  name                 String
+  description          String?
+  url                  String?
+  license              String
+  licenseUrl           String?   @map("license_url")
+  attribution          String?
+  geography            String?
+  dateFrom             DateTime? @map("date_from")
+  dateTo               DateTime? @map("date_to")
+  isSynthetic          Boolean   @default(false) @map("is_synthetic")
+  commercialUseAllowed Boolean   @default(false) @map("commercial_use_allowed")
+  /// false => stored for private analysis only; never returned to other users when the deployment policy forbids it.
+  publicDisplayAllowed Boolean   @default(false) @map("public_display_allowed")
+  adapter              String?
+  limitations          String?
+  rowCount             Int       @default(0) @map("row_count")
+  importedAt           DateTime? @map("imported_at")
+  createdAt            DateTime  @default(now()) @map("created_at")
+
+  opinions Opinion[]
+
+  @@map("data_sources")
+}
+
+/// One row per pair. ACCEPTED rows are treated as symmetric; PENDING/BLOCKED grant no access.
+model Relationship {
+  id          String             @id
+  requesterId String             @map("requester_id")
+  addresseeId String             @map("addressee_id")
+  type        RelationshipType
+  status      RelationshipStatus
+  /// 1..5 tie strength (CHECK constraint in SQL). Used by the configurable inner-circle rule.
+  closeness   Int                @default(3)
+  createdAt   DateTime           @default(now()) @map("created_at")
+  acceptedAt  DateTime?          @map("accepted_at")
+
+  requester User @relation("RelRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+  addressee User @relation("RelAddressee", fields: [addresseeId], references: [id], onDelete: Cascade)
+
+  @@unique([requesterId, addresseeId])
+  @@index([addresseeId, status])
+  @@index([requesterId, status])
+  @@map("relationships")
+}
+
+model Place {
+  id           String   @id
+  name         String
+  type         String
+  city         String
+  neighborhood String?
+  country      String   @default("IN")
+  latitude     Float?
+  longitude    Float?
+  externalId   String?  @map("external_id")
+  isSynthetic  Boolean  @default(true) @map("is_synthetic")
+
+  opinions Opinion[]
+
+  @@index([city, type])
+  @@map("places")
+}
+
+model Opinion {
+  id               String     @id
+  authorId         String     @map("author_id")
+  placeId          String?    @map("place_id")
+  /// Opinion text; derived aspects and embeddings are refreshed when a user edits their own opinion.
+  text             String
+  city             String
+  neighborhood     String?
+  category         String
+  writtenAt        DateTime   @map("written_at")
+  sourceType       SourceType @map("source_type")
+  firsthand        Boolean
+  visibility       Visibility
+  rating           Int?
+  /// FK to data_sources.id ("synthetic-seed-v1", "user-generated", or an imported dataset id).
+  provenanceSource String     @map("provenance_source")
+  provenanceNote   String?    @map("provenance_note")
+  /// Explicit repost/quote link (used for duplicate handling, never inferred silently).
+  repostOfId       String?    @map("repost_of_id")
+  /// Original record id in an imported dataset (unique per source; makes imports idempotent).
+  externalId       String?    @map("external_id")
+  isSynthetic      Boolean    @default(true) @map("is_synthetic")
+  createdAt        DateTime   @default(now()) @map("created_at")
+  /// GENERATED ALWAYS AS (to_tsvector('english', text)) STORED — see migration.
+  searchVector     Unsupported("tsvector")? @map("search_vector")
+
+  source     DataSource         @relation(fields: [provenanceSource], references: [id])
+  author     User               @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  place      Place?             @relation(fields: [placeId], references: [id], onDelete: SetNull)
+  repostOf   Opinion?           @relation("Repost", fields: [repostOfId], references: [id], onDelete: SetNull)
+  reposts    Opinion[]          @relation("Repost")
+  aspects    OpinionAspect[]
+  embeddings OpinionEmbedding[]
+  judgments  EvalJudgment[]
+
+  @@index([city, category])
+  @@index([authorId, visibility])
+  @@index([writtenAt])
+  @@index([visibility, sourceType])
+  @@index([provenanceSource])
+  @@map("opinions")
+}
+
+/// Extracted aspects (derived data, separate from original text). One row per (opinion, aspect, extractor).
+model OpinionAspect {
+  opinionId    String   @map("opinion_id")
+  aspect       String
+  polarity     Polarity
+  matchedTerms String[] @map("matched_terms")
+  extractor    String
+
+  opinion Opinion @relation(fields: [opinionId], references: [id], onDelete: Cascade)
+
+  @@id([opinionId, aspect, extractor])
+  @@index([aspect])
+  @@map("opinion_aspects")
+}
+
+/// One vector per (opinion, embedding model). `embedding` is an unconstrained pgvector `vector`;
+/// queries always filter by `model`, so dimensions never mix. Writes use raw SQL (see src/db/embeddings-store.ts).
+model OpinionEmbedding {
+  opinionId String   @map("opinion_id")
+  model     String
+  dim       Int
+  embedding Unsupported("vector")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  opinion Opinion @relation(fields: [opinionId], references: [id], onDelete: Cascade)
+
+  @@id([opinionId, model])
+  @@index([model])
+  @@map("opinion_embeddings")
+}
+
+/// Stores IDs, scores and metadata only — never opinion text — so run logs cannot leak private content.
+model SearchRun {
+  id             String        @id
+  userId         String        @map("user_id")
+  query          String
+  intent         Json
+  retrievalMode  RetrievalMode @map("retrieval_mode")
+  rankingMode    RankingMode   @map("ranking_mode")
+  effectiveMode  String        @map("effective_mode")
+  candidates     Json
+  selectedIds    Json          @map("selected_ids")
+  providerStatus Json          @map("provider_status")
+  warnings       Json
+  latencyMs      Int           @map("latency_ms")
+  createdAt      DateTime      @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, createdAt])
+  @@map("search_runs")
+}
+
+model EvalQuery {
+  id                 String   @id
+  query              String
+  requesterId        String   @map("requester_id")
+  tags               String[]
+  /// Manually annotated ground-truth hard constraints (not parser output).
+  hardConstraints    Json     @map("hard_constraints")
+  expectedAspects    String[] @map("expected_aspects")
+  expectInsufficient Boolean  @default(false) @map("expect_insufficient")
+  notes              String?
+
+  requester User           @relation(fields: [requesterId], references: [id], onDelete: Cascade)
+  judgments EvalJudgment[]
+
+  @@map("eval_queries")
+}
+
+/// Manual relevance grades 0..3. Unjudged pairs are treated as 0 (pooled judgments).
+model EvalJudgment {
+  evalQueryId String   @map("eval_query_id")
+  opinionId   String   @map("opinion_id")
+  grade       Int
+  /// Aspects this opinion addresses, annotated manually (independent of the rule-based extractor).
+  aspects     String[]
+  note        String?
+
+  evalQuery EvalQuery @relation(fields: [evalQueryId], references: [id], onDelete: Cascade)
+  opinion   Opinion   @relation(fields: [opinionId], references: [id], onDelete: Cascade)
+
+  @@id([evalQueryId, opinionId])
+  @@map("eval_judgments")
+}
+
+model EvaluationRun {
+  id        String   @id
+  createdAt DateTime @default(now()) @map("created_at")
+  config    Json
+  summary   Json
+  perQuery  Json      @map("per_query")
+
+  @@map("evaluation_runs")
+}
