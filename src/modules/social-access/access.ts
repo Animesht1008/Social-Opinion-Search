@@ -1,14 +1,6 @@
 import { Prisma, type Db } from "../../db/client.js";
 import type { AppConfig } from "../../config/env.js";
 
-/**
- * Social access control.
- *
- * Definitions (configurable via env, see docs/DECISIONS.md D-05):
- *  - connection    : an ACCEPTED relationship (either direction; ACCEPTED rows are treated as symmetric).
- *  - inner circle  : a connection whose type is in INNER_CIRCLE_TYPES and whose closeness >= INNER_CIRCLE_MIN_CLOSENESS.
- *  - PENDING / BLOCKED relationships grant nothing. BLOCKED additionally hides the other user's PUBLIC opinions.
- */
 export interface InnerCircleRule {
   types: string[];
   minCloseness: number;
@@ -19,9 +11,7 @@ export interface AccessContext {
   connectionIds: string[];
   innerCircleIds: string[];
   blockedIds: string[];
-  /** Tie strength (1..5) for ACCEPTED connections; used only by the optional social-aware ranking boost. */
   closeness: Record<string, number>;
-  /** Data sources whose text must not be shown to other users (public_display_allowed = false) under the current deployment policy. */
   hiddenSources: string[];
 }
 
@@ -73,7 +63,6 @@ export async function loadAccessContext(db: Db, requesterId: string, rule: Inner
   return buildAccessContext(requesterId, rels, rule, hiddenSources);
 }
 
-/** Pure authorization predicate. The SQL fragment below must stay equivalent (tested). */
 export function canViewOpinion(ctx: AccessContext, o: { authorId: string; visibility: Visibility; provenanceSource?: string }): boolean {
   if (o.authorId === ctx.requesterId) return false; // own opinions are not "social" evidence for yourself
   if (o.provenanceSource && ctx.hiddenSources.includes(o.provenanceSource)) return false; // restricted dataset: not displayable under this policy
@@ -94,7 +83,6 @@ export function channelOf(ctx: AccessContext, authorId: string): Channel {
   return ctx.innerCircleIds.includes(authorId) ? "inner_circle" : "wider_social";
 }
 
-/** SQL predicate applied to every candidate query so unauthorized rows never leave the database. */
 export function authorizationSql(ctx: AccessContext, alias = "o"): Prisma.Sql {
   const a = Prisma.raw(alias);
   return Prisma.sql`(
@@ -109,7 +97,6 @@ export function authorizationSql(ctx: AccessContext, alias = "o"): Prisma.Sql {
   )`;
 }
 
-/** Defense in depth: re-check every record in application code before it enters ranking, logs, or an LLM prompt. */
 export function assertAuthorized<T extends { id: string; authorId: string; visibility: Visibility; provenanceSource?: string }>(ctx: AccessContext, records: T[]): T[] {
   for (const r of records) {
     if (!canViewOpinion(ctx, r)) throw new Error(`Authorization invariant violated for opinion ${r.id}`);
