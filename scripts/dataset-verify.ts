@@ -1,10 +1,3 @@
-/**
- * Post-import health check + qualitative spot-check for every non-synthetic corpus in the database.
- *   npm run dataset:verify [-- --dataset <id>]
- * Reports volume, cities, date range, text lengths, residual PII-pattern hits, duplicate rate, aspect coverage,
- * embedding coverage, and the top results of a few probe queries (data/datasets/probe-queries.json) for you to READ.
- * There are no relevance judgments for imported data, so this prints NO accuracy metric on purpose.
- */
 import { readFileSync } from "node:fs";
 import { loadConfig } from "../src/config/env.js";
 import { createContext } from "../src/context.js";
