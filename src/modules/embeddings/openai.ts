@@ -1,12 +1,10 @@
 import { ProviderError } from "../../shared/errors.js";
 import type { EmbeddingProvider } from "./provider.js";
 
-/** Any OpenAI-compatible `/embeddings` endpoint (OpenAI, Azure-compatible gateways, Ollama, vLLM, ...). */
 export class OpenAiEmbeddingProvider implements EmbeddingProvider {
   readonly kind = "neural-api" as const;
   readonly modelKey: string;
   readonly description: string;
-  /** Unknown until the first response when `dimensions` is not requested explicitly. */
   dimensions: number;
   private static readonly BATCH = 64;
 
