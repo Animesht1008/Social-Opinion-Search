@@ -15,18 +15,12 @@ export interface RetrieveArgs {
   poolSize: number;
   allowFallback: boolean;
   embedding: EmbeddingProvider | null;
-  /** True only if vectors for `embedding.modelKey` exist in the DB. */
   semanticIndexed: boolean;
   timeoutMs: number;
 }
 
 const now = () => performance.now();
 
-/**
- * Candidate generation for the three genuinely distinct modes. Authorization and hard filters are in the SQL of every
- * retriever. Hybrid = union of both candidate sets deduplicated by opinion id; the missing component scores are then
- * completed with targeted queries so every candidate carries both lexical and semantic evidence where it exists.
- */
 export async function retrieve(a: RetrieveArgs): Promise<RetrievalResult> {
   const warnings: string[] = [];
   const t = { lexical: 0, semantic: 0, embed: 0, hydrate: 0 };
