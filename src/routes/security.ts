@@ -3,14 +3,6 @@ import { cookieSecure } from "../config/env.js";
 import type { AppContext } from "../context.js";
 import { AppError } from "../shared/errors.js";
 
-/**
- * Defence-in-depth HTTP hardening:
- *  - strict CSP (no inline script/style; the UI is written to comply),
- *  - nosniff / no-referrer / frame-ancestors none,
- *  - HSTS when cookies are Secure,
- *  - Cache-Control: no-store for API responses (they contain personal data),
- *  - CSRF origin check for state-changing, cookie-authenticated requests.
- */
 export function registerSecurity(app: FastifyInstance, ctx: AppContext) {
   const secure = cookieSecure(ctx.config);
   app.addHook("onSend", async (req, reply) => {
@@ -32,7 +24,6 @@ export function registerSecurity(app: FastifyInstance, ctx: AppContext) {
     if (origin) {
       let o: URL;
       try { o = new URL(origin); } catch { throw new AppError("CSRF_BLOCKED", "Invalid Origin header.", 403); }
-      // Normalise every candidate with the Origin's own scheme so default ports compare equal ("localhost:80" == "localhost" for http).
       const norm = (hostPort: string): string | null => { try { return new URL(`${o.protocol}//${hostPort}`).host; } catch { return null; } };
       const allowed = new Set<string>();
       const add = (h: unknown) => { if (typeof h === "string") { const n = norm(h); if (n) allowed.add(n); } };
