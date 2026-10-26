@@ -1,4 +1,3 @@
-/** Drops and recreates the public schema, then applies migrations. Development only. */
 import "dotenv/config";
 import pg from "pg";
 import { applyMigrations } from "./apply-migrations.js";
