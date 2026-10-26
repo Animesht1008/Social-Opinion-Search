@@ -7,7 +7,8 @@ import { runSearch, type SearchRequest } from "../search/search-service.js";
 import { loadEvalData, DUPLICATE_GROUPS, type EvalQueryRow } from "./data.js";
 import { aspectCoverage, candidateRecall, duplicateRate, mean, ndcgAtK, percentile, precisionAtK, REL_THRESHOLD, STRICT_THRESHOLD } from "./metrics.js";
 
-/** The benchmark's relevance judgments cover the synthetic corpus only; imported datasets and user posts are excluded so they cannot be unfairly counted as "irrelevant". */
+/** The benchmark's relevance judgments cover the synthetic corpus only; 
+imported datasets and user posts are excluded so they cannot be unfairly counted as "irrelevant". */
 export const EVAL_CORPUS = "synthetic-seed-v1";
 
 /** Pinned so freshness scores and relative time windows are reproducible. */
