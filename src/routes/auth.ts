@@ -5,12 +5,6 @@ import { cookieName, parseCookies } from "../modules/auth/cookies.js";
 import { lookupSession, type SessionUser } from "../modules/auth/sessions.js";
 import { AppError } from "../shared/errors.js";
 
-/**
- * Request authentication. Accepts either
- *   - the HttpOnly session cookie (browser UI), or
- *   - `Authorization: Bearer sos_...` (API/CLI clients that logged in with mode "token").
- * Sessions are opaque server-side tokens (see modules/auth/sessions.ts). There is no header-based identity any more.
- */
 const cache = new WeakMap<FastifyRequest, SessionUser | null>();
 
 export function extractToken(req: FastifyRequest, secure: boolean): { token: string; via: "bearer" | "cookie" } | null {
@@ -26,7 +20,6 @@ export function extractToken(req: FastifyRequest, secure: boolean): { token: str
 export async function getSession(ctx: AppContext, req: FastifyRequest): Promise<SessionUser | null> {
   if (cache.has(req)) return cache.get(req)!;
   const t = extractToken(req, cookieSecure(ctx.config));
-  // Sessions always use the real clock (REFERENCE_DATE only pins ranking/eval time).
   const s = t ? await lookupSession(ctx.db, t.token, new Date()) : null;
   cache.set(req, s);
   return s;
@@ -38,7 +31,6 @@ export async function requireSession(ctx: AppContext, req: FastifyRequest): Prom
   return s;
 }
 
-/** Kept for route code that only needs the user id. */
 export async function requireUser(ctx: AppContext, req: FastifyRequest): Promise<string> {
   return (await requireSession(ctx, req)).id;
 }
