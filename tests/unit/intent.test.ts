@@ -23,6 +23,12 @@ describe("rule-based query understanding", () => {
     expect(i.keywords).not.toContain("sister");
     expect(i.evidenceCharacteristics).toEqual(expect.arrayContaining(["include_negative", "include_conflicting"]));
   });
+  it("recognizes plural hotel queries without inventing unspecified aspects", () => {
+    const i = parseQueryRules("Hotels in Mumbai?", ctx);
+    expect(i.topic).toBe("hotel_area");
+    expect(i.aspects).toEqual([]);
+    expect(i.ambiguities.join(" ")).toMatch(/No known aspect/);
+  });
   it("extracts explicit hard constraints: firsthand, time window, inner circle", () => {
     const i = parseQueryRules("Only from my close friends, people who actually stayed in Mumbai in the last 6 months", ctx);
     const kinds = i.hardConstraints.map((c) => c.kind).sort();

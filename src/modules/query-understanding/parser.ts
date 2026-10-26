@@ -77,7 +77,7 @@ export function parseQueryRules(query: string, ctx: ParseContext): Intent {
 
   // --- topic (soft context, not a filter) ---
   const topicVotes: Record<string, number> = {
-    hotel_area: (lower.match(/\b(hotel|stay|staying|accommodation|guesthouse|hostel|lodging)\b/g) ?? []).length,
+    hotel_area: (lower.match(/\b(hotels?|stay|staying|accommodation|guesthouses?|hostels?|lodging)\b/g) ?? []).length,
     cafe: (lower.match(/\b(cafe|café|coffee|cowork|co-work|work from|laptop)\b/g) ?? []).length,
     restaurant: (lower.match(/\b(restaurant|dinner|lunch|eat|eating|food|thali|meal|vegetarian|veg)\b/g) ?? []).length,
   };
