@@ -1,8 +1,4 @@
 -- Social Opinion Search — initial schema.
--- Hand-authored to match prisma/schema.prisma, plus Postgres features Prisma cannot model:
---   * pgvector extension
---   * generated tsvector column + GIN index for lexical retrieval
---   * CHECK constraints
 CREATE EXTENSION IF NOT EXISTS vector;
 
 CREATE TYPE "RelationshipType" AS ENUM ('FRIEND', 'FAMILY', 'COLLEAGUE', 'ACQUAINTANCE');
