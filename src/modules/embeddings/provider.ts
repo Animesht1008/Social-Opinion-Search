@@ -4,17 +4,9 @@ import { createGloveProvider } from "./glove.js";
 import { OpenAiEmbeddingProvider } from "./openai.js";
 import { TestHashEmbeddingProvider } from "./test-hash.js";
 
-/**
- * kind:
- *  - "neural-api":          contextual embeddings from a hosted model (OpenAI-compatible endpoint)
- *  - "static-word-vectors": average of pretrained static word vectors (GloVe). Real learned embeddings, but weaker
- *                           than contextual sentence encoders — labelled as such everywhere.
- *  - "test-only":           deterministic feature hashing for unit tests. NOT semantic; never used for evaluation.
- */
 export type EmbeddingKind = "neural-api" | "static-word-vectors" | "test-only";
 
 export interface EmbeddingProvider {
-  /** Stored with every vector so query and corpus embeddings are always compatible. */
   readonly modelKey: string;
   readonly kind: EmbeddingKind;
   readonly dimensions: number;
@@ -24,7 +16,6 @@ export interface EmbeddingProvider {
 
 export interface EmbeddingStatus {
   configured: boolean;
-  /** True only when a configured provider has indexed vectors for the current corpus. */
   semanticAvailable: boolean;
   provider: string;
   modelKey: string | null;
