@@ -3,16 +3,6 @@ import { ProviderError } from "../../shared/errors.js";
 import { tokenize } from "../../shared/text.js";
 import type { EmbeddingProvider } from "./provider.js";
 
-/**
- * Static word-embedding sentence vectors from pretrained GloVe (Wikipedia + Gigaword, 6B tokens; Pennington et al. 2014,
- * distributed in PDDL licence). Sentence vector = SIF-weighted average of word vectors (Arora et al. 2017) with the
- * common discourse direction removed. These ARE learned dense embeddings — but static and non-contextual, so weaker than
- * modern sentence encoders. Provider kind is "static-word-vectors" and reported as such.
- *
- * Binary format produced by scripts/fetch-glove.ts ("SOSG1"):
- *   magic[5] | uint32 dim | uint32 count | repeat(count){ uint16 byteLen | utf8 word | float32[dim] }
- * Words are stored in descending corpus frequency order, so rank approximates a Zipf frequency prior for SIF weights.
- */
 export const GLOVE_MAGIC = "SOSG1";
 
 export class GloveEmbeddingProvider implements EmbeddingProvider {
