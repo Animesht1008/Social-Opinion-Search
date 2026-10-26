@@ -11,4 +11,3 @@ reports/*
 data/datasets/raw/*
 !data/datasets/raw/.gitkeep
 .env.example
-.env.example
