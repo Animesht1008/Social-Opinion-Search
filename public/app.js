@@ -46,12 +46,42 @@ const errList = (e) => (e.details && Array.isArray(e.details) ? e.details.map((d
 
 /* ------------------------------------------------------------------ auth screens */
 function showAuth() {
+  resetWorkspace();
   state.user = null;
   $("app").hidden = true; $("userbar").hidden = true; $("auth").hidden = false;
 }
 function signedOut() { if (state.user) showAuth(); }
 
+function resetAuthForms() {
+  $("form-login").reset();
+  $("form-register").reset();
+  $("login-email").value = "";
+  $("login-password").value = "";
+  $("reg-name").value = "";
+  $("reg-email").value = "";
+  $("reg-password").value = "";
+  document.querySelectorAll("[data-auth]").forEach((b) => b.classList.toggle("active", b.dataset.auth === "login"));
+  $("form-login").hidden = false;
+  $("form-register").hidden = true;
+  showMsg($("auth-msg"), "");
+}
+
+function resetWorkspace() {
+  resetAuthForms();
+  $("form-search").reset();
+  $("query").value = "";
+  $("results").hidden = true;
+  $("results").querySelectorAll(".panel").forEach((panel) => panel.replaceChildren());
+  showMsg($("search-error"), "");
+  $("source-filter").replaceChildren();
+  $("circle-line").textContent = "";
+  for (const id of ["tab-circle", "tab-mine", "tab-eval", "tab-account"]) $(id).replaceChildren();
+  state.sources = [];
+  switchTab("search");
+}
+
 async function showApp() {
+  resetWorkspace();
   $("auth").hidden = true; $("app").hidden = false; $("userbar").hidden = false;
   $("whoami").textContent = `${state.user.displayName} · ${state.user.email}`;
   await loadSources();
@@ -70,14 +100,14 @@ function bindAuth() {
     ev.preventDefault();
     try {
       const r = await api("/api/v1/auth/login", { method: "POST", body: { email: $("login-email").value, password: $("login-password").value } });
-      $("login-password").value = ""; state.user = r.user; await showApp();
+      state.user = r.user; await showApp();
     } catch (e) { showMsg($("auth-msg"), errText(e)); }
   });
   $("form-register").addEventListener("submit", async (ev) => {
     ev.preventDefault();
     try {
       const r = await api("/api/v1/auth/register", { method: "POST", body: { displayName: $("reg-name").value, email: $("reg-email").value, password: $("reg-password").value } });
-      $("reg-password").value = ""; state.user = r.user; await showApp();
+      state.user = r.user; await showApp();
     } catch (e) { showMsg($("auth-msg"), errList(e)); }
   });
   $("btn-signout").addEventListener("click", async () => { try { await api("/api/v1/auth/logout", { method: "POST" }); } finally { showAuth(); } });
